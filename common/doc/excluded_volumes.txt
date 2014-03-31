@@ -1,0 +1,7 @@
+2012-01-23:
+
+- The following volumes do not contain UASR-usable turns: 63, 64, 65
+  Reason: no German signal files
+
+- The following volumes do not contain UASR-usable turns: 6, 8, 13, 23, 28, 31, 42, 43, 50
+  Reason: no MAUS labels

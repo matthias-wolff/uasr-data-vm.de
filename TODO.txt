@@ -1,0 +1,2 @@
+o vm: check suspicious turn signals
+o vm: backup on DVDs

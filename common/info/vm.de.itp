@@ -1,0 +1,268 @@
+## Unified Approach to Speech Synthesis and Recognition
+## - Verbmobil data base functions
+##
+## AUTHOR : Matthias Wolff
+## UPDATE : $Date: 2007/03/02 06:55:35 $, $Author: wolff $
+##          $Revision: 1.10.2.1 $
+## PACKAGE: uasr/scripts/dlabpro/db
+## RCS-ID : $Id: vm.itp,v 1.10.2.1 2007/03/02 06:55:35 wolff Exp $
+##
+
+"$__SMAIN__" "DB" == if                                                         # Executing the DB-script >>
+  "vmtools.itp" include;                                                        #   Include VM tools
+end                                                                             # <<
+
+## <p>Determines the type of the specified Vermobil CD. The type encodes how
+## the signal data are stored on the CD. There are three different types:</p>
+## <table class="indent">
+##   <tr><th>Type</th><th>VM Part</th><th>Description</th></tr>
+##   <tr><td>1</td><td>I</td><td>One PhonDat signal file per turn, 8.3 file name</td></tr>
+##   <tr><td>2</td><td>II</td><td>One NIST signal file per speaker, marker files</td></tr>
+##   <tr><td>3</td><td>II</td><td>One NIST signal file per turn</td></tr>
+## </table>
+##
+## @param nCdid number
+##          CD index
+## @return <code>TRUE</code> if the CD index denotes a VM2 CD,
+##         <code>FALSE</code> if it denotes a VM1 CD
+function -VM_cd_type(nCdid)
+{
+  nCdid 14 <= if 1 return; end
+  nCdid 24 <= if 2 return; end
+  nCdid 30 == if 2 return; end
+  nCdid 46 <= if 3 return; end
+  nCdid 49 <= if 2 return; end
+  3 return;
+}
+
+## <code>_cd&lt;CdId&gt;[/&lt;DialogId&gt;[/&lt;SignalFile&gt;[_&lt;TurnId&gt;_&lt;SpeakerId&gt;]]]</code>
+function -VM_parse_turn_id(sId,idId)
+{
+  data idAux;                                                                   # Auxilary data instance
+  48 1 1 idId -array { $[sId] };                                                # Initialize parse buffer
+  idId "/_cd/" "replace" idId -strop;                                           # Remove "_cd"
+  idId "/\\"   "split"   idId -strop;                                           # Split at path delimiters
+  idId.dim 3 != if goto L_ERROR; endif                                          # Should have three comps!
+  idId 2 1 idAux -select;                                                       # Copy turn ID to auxilary buffer
+  idAux "_" "split" idAux -strop;                                               # Split turn ID
+  idAux idId -join;                                                             # Join to parse buffer
+  8 1 7 idAux -array { "CD" "PATH" "TID" "FILE" "TURN" "SPKR" "LANG" };         # Make component names array
+  idAux 0 idId -set_cnames;                                                     # Set component names of result
+  TRUE return;                                                                  # Success
+
+  label L_ERROR;                                                                # -- ERROR ----------------------------
+  "Invalid VM turn ID \"$[sId]\"" -ERROR;                                       # Error message
+  idId -reset;                                                                  # Reset destination
+  FALSE return;                                                                 # Failure
+}
+
+## Imports the signal data of one VerbMobil turn.
+##
+## @param sDir string
+##          Path to signal files
+## @param sId string
+##          VerbMobil turn identifier. The format is
+##          <code>_cdC[C]/DDDDD/FFFFFFFF_TTT_SSS[_LLL]</code> (<code>C</code>:
+##          CD index, <code>D</code>: dialoge index, <code>F</code> signal file
+##          name, <code>T</code>: turn index, <code>S</code>: speaker code,
+##          <code>L</code>: optional language code)
+## @param idSig data
+##          Data instance to be filled with signal
+function -SIG_import_vm(sDir,sId,idSig)
+{
+  data idTrn;                                                                   # Turn identifier parse buffer
+  data idMar;                                                                   # VM2 marker stream
+  data idAux;                                                                   # Auxilary data instance
+  var  sFn;                                                                     # Signal file name
+  var  nAquant; "sig.aquant" 16 -CFG_get nAquant -vset;                         # Get quantization resolution
+  var  sEopt;     .__UTL_nVlevel 3 > if "" else "/noerror" end sEopt =;         # Error option
+  .__UTL_nVlevel 4 > if 1 stdfile -set check; end                               # Set check level on stdfile
+
+  idSig -reset;                                                                 # Reset destination instance
+  "$[sDir]/$[sId].wav" "wav" idSig stdfile /noerror -import ?error not if       # Try to import wav file (OK) >>
+    "\n     - Signal: \"$[sDir]/$[sId].wav\" "                         4 -MSGX; # Protocol (on verbose level 4)
+    "WAV"                                                              3 -MSGX; #   Protocol
+  else                                                                          # << No such wave file >>
+    sId idTrn -VM_parse_turn_id;                                                #   Parse turn identifier
+    :idTrn[0,0]: -VM_cd_type 1 == if                                            #   Is a VM1 turn >>
+      "${sDir}/_cd${idTrn[0,0]}/${idTrn[0,1]}/${idTrn[0,1]}${idTrn[0,4]}" sFn =;#     Compute file name (w/o extension)
+      "\n     - Signal: \"$[sFn].?16\" "                               4 -MSGX; # Protocol (on verbose level 4)
+      sFn ".a16" + "phd" idSig stdfile $[sEopt] -import ?error if               #     Try .a16 file (failed >>)
+        sFn ".b16" + "phd" idSig stdfile $[sEopt] -import ?error if             #       Try .b16 file (failed >>)
+          sFn ".c16" + "phd" idSig stdfile $[sEopt] -import ?error if           #         Try .c16 file (failed >>)
+            sFn ".d16" + "phd" idSig stdfile $[sEopt] -import ?error if         #           Try .d16 file (failed >>)
+              "Failed to import signal for VM turn \"${sFn}\"." -ERROR;         #             Error message
+              .__UTL_nVlevel 4 > if 0 stdfile -set check; end                   #             Reset check lvl.on stdfile
+              leave;                                                            #             Nothing to be done
+            end                                                                 #           <<
+          end                                                                   #         <<
+        end                                                                     #       <<
+      end                                                                       #     <<
+      "PHND"                                                           3 -MSGX; #     Protocol
+    else                                                                        #   << Is a VM2 turn >>
+      :idTrn[0,0]: -VM_cd_type 2 == if                                          #     Is type 2 >>
+        "${sDir}/_cd${idTrn[0,0]}/${idTrn[0,1]}/${idTrn[0,3]}.16" sFn =;        #       Compute signal file name
+        "\n     - Signal: \"$[sFn]\" "                                 4 -MSGX; # Protocol (on verbose level 4)
+        sFn "vm2_nist" idSig stdfile $[sEopt] -import ?error if                 #       Load signal file (failed >>)
+          "Failed to import signal for VM turn \"${sFn}\"." -ERROR;             #         Error message
+          .__UTL_nVlevel 4 > if 0 stdfile -set check; end                       #         Reset check level on stdfile
+          leave;                                                                #         Nothing to be done
+        end                                                                     #       <<
+        "${idTrn[0,3]}" sFn =; sFn "6" "left" -VAR_strop sFn =;                 #       Marker file name: left 6 chars.
+        "${sDir}/_cd${idTrn[0,0]}/${idTrn[0,1]}/${sFn}.mar" sFn =;              #       Compute marker file name
+        sFn "ascii" idMar stdfile $[sEopt] -import ?error if                    #       Load marker file (failed >>)
+          "Failed to import marker file for VM turn \"${sFn}\"." -ERROR;        #         Error message
+          idSig -reset;                                                         #         Reset destination instance
+          .__UTL_nVlevel 4 > if 0 stdfile -set check; end                       #         Reset check level on stdfile
+          leave;                                                                #         Nothing to be done
+        end                                                                     #       <<
+        32 1 1 idAux -array { "${idTrn[0,2]}" };                                #       Put turn ID into a buffer
+        idAux idMar 0 2 idAux -gen_index;                                       #       Seek turn ID in marker stram
+        idAux 0 idMar 0 3 idAux -lookup;                                        #       Copy markers of turn
+        idSig :idAux[0,0]: :idAux[0,1]-idAux[0,0]: idSig /rec -select;          #       Trim signal to markers
+      else                                                                      #     << Is type 3 >>
+        "${sDir}/_cd${idTrn[0,0]}/${idTrn[0,1]}/${idTrn[0,2]}.nis" sFn =;       #       Compute file name
+        "\n     - Signal: \"$[sFn]\" "                                 4 -MSGX; # Protocol (on verbose level 4)
+        sFn "vm2_nist" idSig stdfile $[sEopt] -import ?error if                 #       Load signal file (failed >>)
+          "Failed to import signal for VM turn \"${sFn}\"." -ERROR;             #         Error message
+          .__UTL_nVlevel 4 > if 0 stdfile -set check; end                       #         Reset check level on stdfile
+          leave;                                                                #         Nothing to be done
+        end                                                                     #       <<
+      end                                                                       #     <<
+      "NIST"                                                           3 -MSGX; #     Protocol
+    end                                                                         #   <<
+  end                                                                           # <<
+
+  .__UTL_nVlevel 4 > if 0 stdfile -set check; end                               # Reset check level on stdfile
+  idSig :2^(nAquant-1): scale idSig =;                                          # Convert amplitude to -1<=s(k)<=1
+}
+
+## <p>Imports the phonetic signal labels of one VerbMobil turn.</p>
+## <h4>Structure of Result</h4>
+## <table class="indent">
+##   <tr><th colspan="2">Component</th><th>Description</th></tr>
+##   <tr><th>No.</th><th>Name</th><th> </th></tr>
+##   <tr><td>0</td><td><code>&lt;sLid&gt;</code></td><td>Label name</td></tr>
+##   <tr><td>0</td><td><code>POS</code></td><td>Label position (samples)</td></tr>
+##   <tr><td>0</td><td><code>CNT</code></td><td>Label length (samples)</td></tr>
+## </table>
+##
+## @param sDir string
+##          Path to label files
+## @param sTid string
+##          <code>_cdC[C]/DDDDD/FFFFFFFF_TTT_SSS[_LLL]</code> (<code>C</code>:
+##          CD index, <code>D</code>: dialoge index, <code>F</code> signal file
+##          name, <code>T</code>: turn index, <code>S</code>: speaker code,
+##          <code>L</code>: optional language code)
+## @param idLab data
+##          Data instance to be filled with labels
+function -LAB_import_vm(sDir,sTid,idLab)
+{
+  file iF;                                                                      # File import filter
+  data idAux;                                                                   # Auxiliary data instance
+  var  sFn;                                                                     # Partiture file name
+
+  ## Load partiture file and extract Maus labels and convert to UASR            # -------------------------------------
+  idLab -reset;                                                                 # Reset destination instance
+  sTid idAux -VM_parse_turn_id;                                                 # Parse turn identifier
+  "${sDir}/_cd${idAux[0,0]}/${idAux[0,1]}/"                                     # Create partiture file name
+    "${idAux[0,3]}_${idAux[0,4]}_${idAux[0,5]}.par" + sFn =;                    # |
+  "MAU:" iF set line_flt;                                                       # Set line filter for ascii import
+  idAux -reset;                                                                 # Reset auxilary instance
+  "\n     - Labels: \"$[sFn]\""                                        4 -MSGX; # Protocol (on verbose level 4)
+  sFn "ascii" idAux iF -import;                                                 # Import partiture file
+  0 idAux.nrec == if FALSE return; end                                          # Didn't get no labels
+  idAux 4 1 idLab -select;                                                      # Copy labels
+  :idAux[1]: idLab -join;                                                       # Join label offsets
+  :idAux[2]: idLab -join;                                                       # Join label lengths (may be corrupt)
+  :idAux[1]: -1 idAux /rec -shift; :idAux-idLab[1]: idLab -join;                # Compute valid label lengths
+  :idLab[idLab.nrec-1,3]=idLab[idLab.nrec-1,2]+1;                               # Compute length of last label
+  idLab 2 1 idLab -delete;                                                      # Delete original label lengths
+  8 1 3 idAux -array { "MAU" "POS" "LEN" }; idAux 0 idLab -set_cnames;          # Set component names of result
+  TRUE return;
+}
+
+## Imports the transliteration of one VerbMobil turn. The result contains one
+## symbolic component filled with lexicon entries.
+##
+## @param sDir string
+##          Path to transliteration files
+## @param sTid string
+##          <code>_cdC[C]/DDDDD/FFFFFFFF_TTT_SSS[_LLL]</code> (<code>C</code>:
+##          CD index, <code>D</code>: dialoge index, <code>F</code> signal file
+##          name, <code>T</code>: turn index, <code>S</code>: speaker code,
+##          <code>L</code>: optional language code)
+## @param idTrl data
+##          Data instance to be filled with the transliteration
+function -TRL_import_vm(sDir,sTid,idTrl)
+{
+  file iF;                                                                      # File import filter
+  data idAux;                                                                   # Auxiliary data instance
+  var  sFn;                                                                     # Partiture file name
+
+  sTid idAux -VM_parse_turn_id;                                                 # Parse turn identifier
+  "${sDir}/_cd${idAux[0,0]}/${idAux[0,1]}/"                                     # Create partiture file name
+    "${idAux[0,3]}_${idAux[0,4]}_${idAux[0,5]}.par" + sFn =;                    # |
+  "ORT:" iF set line_flt;                                                       # Set line filter for ascii import
+
+	idTrl -reset;                                                                 # Reset destination instance
+  sFn "ascii" idTrl iF /strings -import;                                                 # Import partiture file
+  idTrl.nrec 0 == if FALSE return; end                                          # Das war n�scht ...
+  idTrl 0 2 idTrl -delete;                                                      # Delete extra components
+  TRUE return;
+}
+
+## Imports the VerbMobil lexicon.
+function -LX_import_vm(sFile,idLex)
+{
+  file iF;                                                                      # File instance for ASCII import
+  data idLmap;                                                                  # Label mapong table
+  data idPhon;                                                                  # Phonetic symbols
+  data idPhonM;                                                                 # Phonetic symbols after mapping
+  data idAux;                                                                   # Auxiliary data instance #1
+  var  nC;                                                                      # Current component
+  
+  ## Load lexicon file                                                          # -------------------------------------
+  "\t" iF -set sep;                                                             # Orth./phon. tabulator-seperated
+  sFile "ascii" idLex iF /strings -import ?error if FALSE return; end           # Load lexicon file
+
+  ## Map phonemes                                                               # -------------------------------------
+  -LAB_get_map idLmap =;                                                        # Get label map
+  {                                                                             # |
+    { ""     ""  }                                                              # |
+    { "_usb" "#" }                                                              # |
+    { "_2:"  "2" }                                                              # |
+    { "_6"   "6" }                                                              # |
+    { "_9"   "9" }                                                              # |
+  } idLmap -cat;                                                                # Pimp it ...
+  :idLex[1]: " " "split" idPhon -strop;                                         # Split phonetic strings
+  idLex 1 1 idLex -delete;                                                      # Delete phonetic strings from idLex
+  nC idPhon.dim < while                                                         # Loop over components >>
+    idPhon idLmap nC 0 idAux -gen_index;                                        #   Find phonetic symbols in map
+    idAux 0 idLmap 1 1 idAux -lookup;                                           #   Map 'em
+    idAux idPhonM -join;                                                        #   Join 'em to mapped instance
+    nC ++=;                                                                     #   Next component
+  end                                                                           # <<
+
+  ## Compile phonetic strings and join to lexicon                               # -------------------------------------
+  idPhonM "" "ccat" idPhonM -strop;                                             # Compile mapped phonetic strings
+  idPhonM idLex -join;                                                          # Join to lexicon
+   
+  TRUE return;                                                                  # Jo!
+}
+
+## Method overwrites                                                            # -------------------------------------
+".-SIG_import" "function" ?instance if
+  /disarm -SIG_import_vm /disarm -SIG_import =;                                 #   Overwrite -SIG_import
+end
+".-LAB_import" "function" ?instance if
+  /disarm -LAB_import_vm /disarm -LAB_import =;                                 #   Overwrite -LAB_import
+end
+".-TRL_import" "function" ?instance if
+  /disarm -TRL_import_vm /disarm -TRL_import =;                                 #   Overwrite -TRL_import
+end
+".-LX_import" "function" ?instance if
+  /disarm -LX_import_vm /disarm -LX_import =;                                   #   Overwrite -LX_import
+end
+
+## EOF

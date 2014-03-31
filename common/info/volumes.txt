@@ -1,0 +1,8 @@
+## VerbMobil volume definition file
+##
+##   first  column: volume number
+##   second column: volume type (see documentation of function -VM_cd_type)
+
+
+
+## EOF

@@ -1,0 +1,692 @@
+## Unified Approach to Speech Synthesis and Recognition
+## - Verbmobil data base management tool kit
+##
+## AUTHOR : Matthias Wolff
+## PACKAGE: uasr-data/vm/common/info/
+##
+
+"$UASR_HOME/scripts/dlabpro/util/@.itp" /noerror include;
+
+## -- VM TOOL FUNCTIONS --------------------------------------------------------
+
+## Lists the Verbmobil CD-ROM volumes.
+##
+## @param idV data
+##          Will be filled a list of CD numbers
+function -VMTL_list(idV)
+{
+  data idAux;                                                                   # Auxilary data instance
+  var  sDir;                                                                    # Folder
+  "sig" "" -CFG_get_path sDir =;                                                # Get signal folder
+  sDir -cd ?error not if                                                        # Change to signal folder, success >>
+    "." "_cd*" FALSE idV -SH_find;                                              #   Find matching CD directories
+  end                                                                           # <<
+  "fea" "" -CFG_get_path sDir =;                                                # Get feature folder
+  sDir -cd ?error not if                                                        # Change to feature folder, success >>
+    "." "_cd*" FALSE idAux -SH_find;                                            #   Find matching CD directories
+  end                                                                           # <<
+  idV idAux idV -SET_union;                                                     # Union of lists
+  idV "?_cd?" "replace" idV -strop;                                             # Trim
+}
+
+## Returns a list of banned turns.
+##
+## @return List of banned turns.
+function -VMTL_banned()
+{
+  {
+    { "_cd4/m034n/m034nxx0_014_ZDM"  }                                          # Signal file corrupt
+    { "_cd21/g522a/g522ach1_033_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_034_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_035_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_036_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_037_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_038_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_039_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_040_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_041_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_042_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_043_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_044_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_045_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_046_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_047_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_048_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_049_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_050_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_051_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_052_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_053_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_054_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_055_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_056_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_057_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_058_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_059_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_060_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_061_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_062_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_063_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_064_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_065_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_066_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_067_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_068_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_069_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_070_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_035_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_036_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_037_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_038_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_039_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_040_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_041_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_042_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_043_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_044_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_045_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_046_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_047_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_048_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_049_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_050_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_051_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_052_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_053_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_054_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_055_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_056_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_057_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_058_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_059_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_060_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_061_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_062_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_063_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_064_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_065_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_066_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_067_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_068_BFR" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach1_069_BFQ" }                                          # mar/par mismatch
+    { "_cd21/g522a/g522ach2_070_BFR" }                                          # mar/par mismatch
+  } return;
+}
+
+## Classifies elements of a turn list for dialog and speaker and counts the
+## different elements of these categories.
+##
+## @param idTl data
+##          Turn list
+## @return A data instance containing information about the turn list.
+function -VMTL_info(idTl)
+{
+  data idRet;                                                                   # File list info table (return value)
+  data idAux;                                                                   # Auxilary data instance
+  
+  ## Display turn list info                                                     # -------------------------------------
+  "\n   - " "${idTl} set" -14 -MSG_pad + ": ${idTl.nrec} turns, " +       -MSG; # Protocol (turn list name and size)
+  idTl -SET_is_unique if "unique" else "NOT UNIQUE" endif                 -MSG; # Check unique and protocol  
+
+  ## Initialize                                                                 # -------------------------------------
+  "dlg" -type long idRet -addcomp;                                              # Add dialog number 
+  "spk" -type long idRet -addcomp;                                              # Add speaker number
+  1 idRet -allocate;                                                            # Allocate one record
+  idTl -is_empty if idRet return; endif;                                        # No turn list, no service
+
+  ## Classify turns                                                             # -------------------------------------
+  idTl "/" "split" idAux -strop;                                                # Split turn id's at '/'
+  idAux 1 idAux -sortup;                                                        # Sort by dialog id
+  idAux 1 idAux -compress;                                                      # RLE compression (count dialogs)
+  idAux.nrec 0 0 idRet -dstore;                                                 # Store number of dialogs
+  idTl "_" "split" idAux -strop;                                                # Split turn id's at '_'
+  idAux 2 idAux -sortup;                                                        # Sort by speaker id
+  idAux 2 idAux -compress;                                                      # RLE compression (count speakers)
+  idAux.nrec 0 1 idRet -dstore;                                                 # Store number of speakers
+  idRet return;                                                                 # Return turn info
+}
+
+## Loads the turn list <code>&lt;idTl&gt;.flst</code> from the file lists
+## directory. The file list directory is defined in the configuration file.
+##
+## @param idTl data
+##          Will be filled with the turn list
+function -VMTL_load(idTl)
+{
+  idTl -reset;
+  "" 48 idTl -addcomp;
+  "flists" "S" -CFG_get_path "/${idTl}.flst" +
+    "ascii" idTl stdfile /noerror -import;
+  idTl -VMTL_info;
+}
+
+## Checks if two turn lists are disjoint.
+##
+## @param idTl1 data
+##          Turn list 1
+## @param idTl2 data
+##          Turn list 2
+## @return <code>TRUE</code> if the lists are disjoint, <code>FALSE</code>
+##         otherwise
+function -VMTL_disjoint(idTl1,idTl2)
+{
+  data idAux;
+  idTl1 idTl2 idAux -SET_intersect;
+  "\n   - " "${idTl1},${idTl2}" -14 -MSG_pad + ": " +                     -MSG; # Protocol (turn list name and size)
+  idAux.nrec 0 == if                                                            # Lists are disjoint >>
+    "disjoint"                                                            -MSG; #   Protocol
+    TRUE return;                                                                #   Return
+  else                                                                          # << Lists are not disjoint >>
+    "NOT DISJOINT"                                                        -MSG; #   Protocol
+    FALSE return;                                                               #   Return
+  end                                                                           # <<
+}
+
+## Sorts a turn list ascending by (1) CD index, (2) dialog name and (3) turn
+## index.
+##
+## @param idSrc data
+##          Source turn list
+## @param idDst data
+##          Destination turn list, may be identical with <code>idSrc</code>
+function -VMTL_sort(idSrc,idDst)
+{
+  var  i;
+  data idAux;
+  idSrc idDst -copy;
+  idDst -is_empty if leave; end
+  idSrc idAux -copy;
+  0 i =; i 10 < while
+    idAux "?_cd$[i]/?_cd0$[i]/" "replace" idAux -strop;
+    i ++=;
+  end
+  idAux "_" "split" idAux -strop;
+  idAux "16" "left" idAux -strop;
+  idAux 0 2 idAux -select;
+  idAux "_" "ccat" idAux -strop;
+  idAux idDst -join;
+  idDst 1 idDst -sortup;
+  idDst 1 1 idDst -delete;
+}
+
+## List usable turns of one Verbmobil CD-ROM.
+##
+## @param nCd number
+##          Verbmobil CD number (1-5, 6, 7, 12, 14, 15, 20-22, 24, 29, 30, 32,
+##          38, 39, 46-49, 51-53, 55-59)
+## @param sScn string
+##          Verbmobil scenario code:
+##          <table cellpadding="2">
+##            <tr><td class="hidden">"a"</td><td class="hidden">: Main</td></tr>
+##            <tr><td class="hidden">"b"</td><td class="hidden">: Information desk</td></tr>
+##            <tr><td class="hidden">"c"</td><td class="hidden">: Remote maintenance</td></tr>
+##            <tr><td class="hidden">"d"</td><td class="hidden">: Verbmobil I</td></tr>
+##            <tr><td class="hidden">"n"</td><td class="hidden">: Noise</td></tr>
+##            <tr><td class="hidden">"?"</td><td class="hidden">: All scenarios</td></tr>
+##          </table>
+## @param sRcc string
+##          Recording conditions code:
+##          <table cellpadding="2">
+##            <tr><td class="hidden">"c"</td><td class="hidden">: Close mic</td></tr>
+##            <tr><td class="hidden">"r"</td><td class="hidden">: Room mic</td></tr>
+##            <tr><td class="hidden">"t"</td><td class="hidden">: Telephone</td></tr>
+##            <tr><td class="hidden">"?"</td><td class="hidden">: All conditions</td></tr>
+##          </table>
+## @param sLng string
+##          Language code:
+##          <table cellpadding="2">
+##            <tr><td class="hidden">"GER"</td><td class="hidden">: German</td></tr>
+##            <tr><td class="hidden">"ENG"</td><td class="hidden">: American English</td></tr>
+##            <tr><td class="hidden">"JAP"</td><td class="hidden">: Japanese</td></tr>
+##            <tr><td class="hidden">"*"  </td><td class="hidden">: All languages</td></tr>
+##          </table>
+## @param idTl data
+##          Will be filled with the list of matching turns in the format
+##          <code>_cdN[N]/DDDDS/DDDDSRMC_TTT[_LLL]</code> with:
+##          <table cellpadding="2">
+##            <tr>
+##              <td class="hidden"><code>N[N]</code></td>
+##              <td class="hidden">: CD id (one or two digits)</td>
+##            </tr>
+##            <tr>
+##              <td class="hidden"><code>DDDD</code></td>
+##              <td class="hidden">: Dialog id (four characters)</td>
+##            </tr>
+##            <tr>
+##              <td class="hidden"><code>S</code></td>
+##              <td class="hidden">: Scenario code (one character,
+##                see parameter <code>sScn</code>)</td>
+##            </tr>
+##            <tr>
+##              <td class="hidden"><code>R</code></td>
+##              <td class="hidden">: Recording condition code (one character,
+##                see parameter <code>sRcc</code>)</td>
+##            </tr>
+##            <tr>
+##              <td class="hidden"><code>M</code></td>
+##              <td class="hidden">: Microphone type (one character, see <a
+##              href="../../techdocs/003-VM_Database.html">Techdoc 003</a>)</td>
+##            </tr>
+##            <tr>
+##              <td class="hidden"><code>C</code></td>
+##              <td class="hidden">: Channel (one digit)</td>
+##            </tr>
+##            <tr>
+##              <td class="hidden"><code>TTT</code></td>
+##              <td class="hidden">: Zero-based turn index in dialog</td>
+##            </tr>
+##            <tr>
+##              <td class="hidden"><code>LLL</code></td>
+##              <td class="hidden">: Language code (three characters, see
+##                parameter <code>sLng</code>)</td>
+##            </tr>
+##          </table>
+function -VMTL_volume(nCd,sScn,sRcc,sLng,idTl)
+{
+  var  sSdir;                                                                   # Signal folder
+  var  sPdir;                                                                   # Partiture folder
+  var  sFilter;                                                                 # File name filter
+  data idTinfo;                                                                 # Turn list info
+
+  ## List turns                                                                 # -------------------------------------
+  "\n\n   Listing turns of VM-CD ${nCd}"                                  -MSG; # Protocol
+  "sig" "" -CFG_get_path sSdir =;                                               # Get signal folder
+  "lab" "" -CFG_get_path sPdir =;                                               # Get partiture folder
+
+  ## CD type 1                                                                  # -------------------------------------
+  nCd -VM_cd_type 1 == if                                                       # CD type 1 >>
+    sPdir -cd ?error if leave; end                                              #   Change to partiture folder
+    "????${sScn}[x${sRcc}]??_???_???*.par" sFilter =;                           #   Create file name filter
+    "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                    #   Find matching partiture files
+    idTl "?.par?" "replace" idTl -strop;                                        #   Remove ".par" from file names
+  end                                                                           # <<
+
+  ## CD type 2                                                                  # -------------------------------------
+  nCd -VM_cd_type 2 == if                                                       # CD type 2 >>
+    data idMar;                                                                 #   List of matching marker files
+    data idAux;                                                                 #   Auxilary data instance
+    var  nR;                                                                    #   Current record
+    sSdir -cd ?error if leave; end                                              #   Change to signal folder
+    "????${sScn}[x${sRcc}].mar" sFilter =;                                      #   Create file name filter
+    "_cd${nCd}/" sFilter TRUE idMar -SH_find;                                   #   Find matching marker files
+    idTl -reset; label L_MAR; nR idMar.nrec < if                                #   Loop over marker files >>
+      idAux -reset; :idMar[nR,0]: "ascii" idAux stdfile -import;                #     Import marker file
+      idAux 2 1 idAux -select;                                                  #     Keep only turn id's
+      idAux idTl -cat;                                                          #     Append to turn list
+      nR ++=; goto L_MAR;                                                       #     End of loop
+    end                                                                         #   <<
+    "*" sLng == not if                                                          #   Caring for language >>
+      idTl "_" "split" idAux -strop;                                            #     Split turn id's at '_'
+      idAux.dim 4 < if                                                          #     No language code in turn id's
+        "GER" sLng == not if idTl -reset; end                                   #       Language would be German ...
+      else                                                                      #     << Turn id's contain lang.code >>
+        idAux 3 1 idAux -select;                                                #       Get lang. codes from turn id's
+        idAux sLng "cmp" idAux -strop;                                          #       Compare with required language
+        idAux idTl -dmark;                                                      #       Mark turns of DIFFERENT lang.
+        idTl 0 idTl.nrec idTl /mark -delete;                                    #       Delete them
+      end                                                                       #     <<
+    end                                                                         #   <<
+    idTl "5" "left" idAux -strop;                                               #   Get dialog id from turn id
+    "file" 255 idTl -addcomp;                                                   #   Add full turn id component
+    0 nR =; label L_TRN; nR idTl.nrec < if                                      #   Loop over turns >>
+      "_cd${nCd}/${idAux[nR,0]}/${idTl[nR,0]}" nR 1 idTl -sstore;               #     Store full turn id
+      nR ++=; goto L_TRN;                                                       #     End of loop
+    end                                                                         #   <<
+    idTl 0 1 idTl -delete;                                                      #   Delete short turn id
+  end                                                                           # <<
+
+  ## CD type 3                                                                  # -------------------------------------
+  nCd -VM_cd_type 3 == if                                                       # CD type 3 >>
+    sSdir -cd ?error if leave; end                                              #   Change to signal folder
+    "????${sScn}[x${sRcc}]??_???_???_${sLng}.nis" sFilter =;                    #   Create file name filter
+    "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                    #   Find matching signal files
+    sLng "GER" == idTl -is_empty && if                                          #   German and no "_GER" turns found >>
+      "????${sScn}[x${sRcc}]??_???_???.nis" sFilter =;                          #     Create file name filter
+      "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                  #     Find matching signal files
+    end                                                                         #   <<
+    idTl "?.nis?" "replace" idTl -strop;                                        #   Remove ".nis" from file names
+  end                                                                           # <<
+  
+  ## Aftermath                                                                  # -------------------------------------
+  idTl 0 idTl /noerror -sortup;                                                 # Sort ascending
+  idTl -VMTL_info idTinfo =;                                                    # Get turn list info
+  "\n   - VM-CD         : ${nCd}"                                         -MSG; # Protocol
+  "\n   - Signals       : ${sSdir}" nCd -VM_cd_type 1 >  if " *" + end    -MSG; # Protocol
+  "\n   - Partitures    : ${sPdir}" nCd -VM_cd_type 1 == if " *" + end    -MSG; # Protocol
+  "\n   - Filter        : ${sFilter}"                                     -MSG; # Protocol
+  "\n   - Language      : ${sLng}"                                        -MSG; # Protocol
+  "\n   - Speakers      : ${idTinfo[0,1]}"                                -MSG; # Protocol
+  "\n   - Dialogs       : ${idTinfo[0,0]}"                                -MSG; # Protocol
+  "\n   - Turns         : ${idTl.nrec}"                                   -MSG; # Protocol
+  "\n"                                                                    -MSG; # Protocol
+}
+
+## Checks if signal and partiture files of a set of turn are existing and
+## valid.
+##
+## @param idTl data
+##          Turn list (the function may change this list removing invalid turns)
+function -VMTL_check(idTl)
+{
+  var  sSdir;                                                                   # Signal folder
+  var  sPdir;                                                                   # Partiture folder
+  var  nT;                                                                      # Current turn
+  var  nXXT;
+  var  nTst;                                                                    # Total sample time [s]
+  var  h;                                                                       # Total sample time - hours
+  var  m;                                                                       # Total sample time - minutes
+  var  nErr;                                                                    # Error state
+  data idSig;                                                                   # Signal of current turn
+  data idLab;                                                                   # Phoneme labels of current turn
+  data idBan;                                                                   # Turn ban marker
+  data idTinfo;
+
+  ## Initialize                                                                 # -------------------------------------
+  idTl.nrec nXXT =;                                                             # Get number of turns
+  "\n   Checking $[nXXT] turns"                                           -MSG; # Protocol
+  "sig" "" -CFG_get_path sSdir =;                                               # Get signal folder
+  "lab" "" -CFG_get_path sPdir =;                                               # Get partiture folder
+
+  ## Check turns                                                                # -------------------------------------
+  0 1 -PBAR;                                                                    # Begin progress bar
+  0 nT =; nT idTl.nrec < while                                                  # Loop over raw turn list >>
+    :(nT+1)/idTl.nrec: 1 -PBAR;                                                 #   Display progress
+    "\n     $[nT 1 +]/$[idTl.nrec] - ${idTl[nT,0]}: ."                   -MSG2; #   Protocol
+    sSdir :idTl[nT,0]: idSig -SIG_import;                            "." -MSG2; #   Try loading signal
+    sPdir :idTl[nT,0]: idLab -LAB_import;                            "." -MSG2; #   Try loading phoneme labels
+    idLab TRUE idSig -SIG_label nErr =;                              "." -MSG2; #   Label signal
+#   <sPath> :idTl[nT,0]: idSig -SIG_export;                          "." -MSG2; #   Export as WAV-/ESPSlabel-files
+#   idSig -SIG_check;                                                "." -MSG2; #   TODO:
+    { { "${idTl[nT,0]}" } } -VMTL_banned 0 0 idBan /noerror -gen_index;         #   Turn on ban index?
+    :nErr<0 || -1<idBan[0,0]: if                                                #   Error or banned >>
+      :-1<idBan[0,0]:                                                           #     |
+        if " BANNED" -COLOR_yellow else " CORRUPT" -COLOR_red end        -MSG2; #     Protocol
+      idTl nT 1 idTl /rec -delete;                                              #     Delete turn
+      continue;                                                                 #     Continue with next turn
+    end                                                                         #   <<
+    " passed"                                                            -MSG2; #   Protocol
+    idSig.nrec idSig.rinc * 1000 / nTst +=;                                     #   Accumulate total sample time
+    nT ++=;                                                                     #   End of loop
+  end                                                                           # <<
+  "\n  " -MSG2; "done"                                                    -MSG; # Protocol
+
+  ## Aftermath                                                                  # -------------------------------------
+  idTl -VMTL_info idTinfo =;                                                    # Get turn list info
+  :h=ent(nTst/3600);                                                            # Compute hours of sample time
+  :m=ent(nTst/60)-h*60;                                                         # Compute minutes of sample time
+  "\n\n   Summary"                                                        -MSG; # Protocol
+  "\n   Speakers  : ${idTinfo[0,1]}"                                      -MSG; # Protocol
+  "\n   Dialogs   : ${idTinfo[0,0]}"                                      -MSG; # Protocol
+  "\n   Turns     : ${idTl.nrec}"                                         -MSG; # Protocol
+  "\n   - removed : ${nXXT-idTl.nrec} of ${nXXT}"                         -MSG; # Protocol
+  "\n   Total time: ${h}:${m}\""                                          -MSG; # Protocol
+  "\n"                                                                    -MSG; # Protocol
+}
+
+## -- COMMAND CONTRIBUTIONS TO DB.XTP ------------------------------------------
+
+## DB.xtp help function
+function -VM_DB_help()
+{
+  "\n\n   SYNOPSIS:"                                                    -MSG;
+    "\n     Performs a Verbmobil database management procedure."        -MSG;
+  "\n\n   USAGE:"                                                       -MSG;
+    "\n     DB.xtp <command> <cfgfile> [<options>]"                     -MSG;
+  "\n\n   COMMANDS:"                                                    -MSG;
+#    "\n       cds - Checks data sets"                                   -MSG;
+#    "\n       ctl - Checks a turn list"                                 -MSG;
+    "\n       imp - Imports Verbmobil volumes"                          -MSG;
+    "\n       lat - Lists available turns"                              -MSG;
+  "\n\n   ARGUMENTS:"                                                   -MSG;
+    "\n     <cfgfile>        UASR configuration file"                   -MSG;
+  "\n\n   OPTIONS:"                                                     -MSG;
+    "\n     -c               use colors for terminal output"            -MSG;
+    "\n     -n               do not write any files"                    -MSG;
+    "\n     -v<n>            verbose level"                             -MSG;
+    "\n     -P<key>=<value>  set/overwrite configuration key"           -MSG;
+  "\n\n   ------------------------------------------------------------" -MSG;
+  "\n\n   imp: Imports Verbmobil volumes by linking or copying data"    -MSG;
+    "\n        into the UASR database folder structure."                -MSG;
+  "\n\n   USAGE:"                                                       -MSG;
+    "\n     DB.xtp imp <cfgfile> [<options>]"                           -MSG;
+  "\n\n   REMARKS:"                                                     -MSG;
+    "\n     Special <key>s for DB.xtp imp <cfgfile>:"                   -MSG;
+    "\n       dir: Directory to import data from"                       -MSG;
+  "\n\n   EXAMPLE:"                                                     -MSG;
+    "\n     DB.xtp imp default.cfg -Pdir=myimportdir"                   -MSG;
+  "\n\n   ------------------------------------------------------------" -MSG;
+  "\n\n   lat: Lists all available dialog turns matching certain"       -MSG;
+    "\n        criteria. The program does not regard file lists but"    -MSG;
+    "\n        scans the data folders."                                 -MSG;
+  "\n\n   USAGE:"                                                       -MSG;
+    "\n     DB.xtp lat <cfgfile> [<options>]"                           -MSG;
+  "\n\n   REMARKS:"                                                     -MSG;
+    "\n     Special <key>s for DB.xtp imp <cfgfile>:"                   -MSG;
+    "\n       lng: Language code of turns to list (default: GER)"       -MSG;
+    "\n            GER - German"                                        -MSG;
+    "\n            ENG - English"                                       -MSG;
+    "\n            JAP - Japanese"                                      -MSG;
+    "\n            *   - All languages"                                 -MSG;
+    "\n       rcc: Recording conditions of turns to list (default: c)"  -MSG;
+    "\n            c   - Close mic"                                     -MSG;
+    "\n            r   - Room mic"                                      -MSG;
+    "\n            t   - Telephone"                                     -MSG;
+    "\n            ?   - All recording conditions"                      -MSG;
+    "\n       scn: Scenario code of turns to list (default: ?)  "       -MSG;
+    "\n            a   - Main"                                          -MSG;
+    "\n            b   - Information desk"                              -MSG;
+    "\n            c   - Remote maintenance"                            -MSG;
+    "\n            d   - Verbmobil I"                                   -MSG;
+    "\n            n   - Noise"                                         -MSG;
+    "\n            ?   - All scenarios"                                 -MSG;
+    "\n     See documentation of the Verbmobil database for details"    -MSG;
+    "\n     on languages, recording conditions and scenarios."          -MSG;
+  "\n\n   EXAMPLE:"                                                     -MSG;
+    "\n     DB.xtp lat default.cfg -Plng=* -Prcc=?"                     -MSG;
+  "\n\n   ------------------------------------------------------------" -MSG;
+  "\n\n   There are further undocumented commands."                     -MSG;
+ 0 return;
+ 
+  #sCmd "cds" == if
+    "\n\n   SYNOPSIS:"                                                    -MSG;
+      "\n     Check data sets"                                            -MSG;
+    "\n\n   USAGE:"                                                       -MSG;
+      "\n     dlabpro $__SFILE__.xtp cds <cfgfile> [options]"             -MSG;
+    "\n\n   ARGUMENTS:"                                                   -MSG;
+      "\n     <cfgfile>       UASR configuration file"                    -MSG;
+    "\n\n   OPTIONS:"                                                     -MSG;
+      "\n     -v<n>           verbose level"                              -MSG;
+      "\n     -P<key>=<value> override config. key-value-pairs"           -MSG;
+    "\n\n"                                                                -MSG;
+  #  leave;
+  #endif
+  #sCmd "ctl" == if
+    "\n\n   SYNOPSIS:"                                                    -MSG;
+      "\n     Check one turn list"                                        -MSG;
+    "\n\n   USAGE:"                                                       -MSG;
+      "\n     dlabpro $__SFILE__.xtp ctl <cfgfile> <flist> [options]"     -MSG;
+    "\n\n   ARGUMENTS:"                                                   -MSG;
+      "\n     <cfgfile>       UASR configuration file"                    -MSG;
+      "\n     <flist>         File list id, name of a file in the file"   -MSG;
+      "\n                     lists folder w/o path and extension (e.g."  -MSG;
+      "\n                     train)"                                     -MSG;
+      "\n   OPTIONS:"                                                     -MSG;
+      "\n     -v<n>           verbose level"                              -MSG;
+      "\n     -P<key>=<value> override config. key-value-pairs"           -MSG;
+    "\n\n"                                                                -MSG;
+  #  leave;
+  #endif
+  #sCmd "lat" == if
+    "\n\n   SYNOPSIS:"                                                    -MSG;
+      "\n     List all available turns"                                   -MSG; 
+    "\n\n   USAGE:"                                                       -MSG;
+      "\n     dlabpro $__SFILE__.xtp lat <cfgfile> [options]"             -MSG;
+    "\n\n   ARGUMENTS:"                                                   -MSG;
+      "\n     <cfgfile>       UASR configuration file"                    -MSG;
+    "\n\n   OPTIONS:"                                                     -MSG;
+      "\n     -v<n>           verbose level"                              -MSG;
+      "\n     -P<key>=<value> override config. key-value-pairs"           -MSG;
+    "\n\n"                                                                -MSG;
+  #  leave;
+  #endif
+}
+
+## TODO: Check if covered by CHK.xtp!
+function -CMD_DB_cds()
+{
+  1 brk;
+  data idAux;                                                                   # Auxilary data instance
+
+  ## Load turn sets                                                             # -------------------------------------
+  "\n\n   Loading turn sets" -echo;                                             # Protocol
+  data all;   all   -VMTL_load;                                                 # Load complete set
+  data train; train -VMTL_load;                                                 # Load training set
+  data dev;   dev   -VMTL_load;                                                 # Load development set
+  data test;  test  -VMTL_load;                                                 # Load test set
+  data stat;  stat  -VMTL_load;                                                 # Load statistics set
+  train dev  idAux -SET_union;                                                  # train+dev
+  idAux test idAux -SET_union;                                                  # +test
+  idAux stat idAux -SET_union;                                                  # +stat
+  idAux.nrec all.nrec > if                                                      # |train+dev+test+stat| > |all| >>
+    "\n   - Updating complete set"                                        -MSG; #   Protocol
+    idAux all -copy;                                                            #   Update complete set
+  endif                                                                         # <<
+  train.nrec 0 == if                                                            # Empty training set >>
+    "\n   Creating training set"                                          -MSG; #   Protocol
+    all   test train -SET_minus;                                                #   Create training set
+    train dev  train -SET_minus;                                                #   ...
+  endif                                                                         # <<
+
+  ## Analyze turn sets                                                          # -------------------------------------
+  "\n\n   Analyzing sets"                                                 -MSG; # Protocol
+  all   all   -VMTL_sort; all   -VMTL_info;                                     # Sort complete set and print info
+  train train -VMTL_sort; train -VMTL_info;                                     # Sort training set and print info
+  dev   dev   -VMTL_sort; dev   -VMTL_info;                                     # Sort development set and print info
+  test  test  -VMTL_sort; test  -VMTL_info;                                     # Sort test set and print info
+  stat -VMTL_info;                                                              # Print info on statistics set
+  train dev   -VMTL_disjoint;                                                   # train\dev  = 0 ?
+  train test  -VMTL_disjoint;                                                   # train\test = 0 ?
+  dev   test  -VMTL_disjoint;                                                   # dev\test   = 0 ?
+  stat  dev   -VMTL_disjoint;                                                   # stat\dev   = 0 ?
+  stat  test  -VMTL_disjoint;                                                   # stat\test  = 0 ?
+  "\n   - stat in train : " -MSG;                                               # Protocol
+  stat train idAux -SET_minus; idAux.nrec 0 == if "yes" else "NO" endif -MSG;   # Is stat in train (should be!)
+
+#  "\n\n   Writing sets" -echo;
+#  "flists" "S" -CFG_get_path "/all.flst"   + "ascii" all   stdfile -export;
+#  "flists" "S" -CFG_get_path "/train.flst" + "ascii" train stdfile -export;
+#  "flists" "S" -CFG_get_path "/dev.flst"   + "ascii" dev   stdfile -export;
+#  "flists" "S" -CFG_get_path "/test.flst"  + "ascii" test  stdfile -export;
+#  "flists" "S" -CFG_get_path "/stst.flst"  + "ascii" stat  stdfile -export;
+#  "\n" -echo;
+}
+
+## TODO: Check if covered by CHK.xtp!
+function -CMD_DB_ctl()
+{
+  1 brk;
+  $$ 3 < if                                                                     # Too few command line options >>
+    "Missing command line options"                                      -ERROR; #   Error
+    "$1" -usage;                                                                #   Print help on usage
+    quit;                                                                       #   End program
+  endif                                                                         # <<
+  data $3; $3 -VMTL_load;
+  $3 -VMTL_check;
+}
+
+## Extension to DB.xtp
+function -CMD_DB_lat()
+{
+  data idV;                                                                     # Volume list
+  data idTrn;                                                                   # Turn list
+  data idAux;                                                                   # Auxiliary data instance
+  var  nV;                                                                      # Verbmobil volume (CD) number
+  var  sLng;  ( "lng" "GER" "S" -CFG_get_ex ) sLng =;                           # Get language code
+  var  sRcc;  ( "rcc" "c"   "S" -CFG_get_ex ) sRcc =;                           # Get recording condition code
+  var  sScn;  ( "scn" "?"   "S" -CFG_get_ex ) sScn =;                           # Get scenario code
+  var  sVol;  ( "vol" "*"   "S" -CFG_get_ex ) sVol =;                           # Get volume list
+
+  sVol "*" == if                                                                # Scan all available volumes >>
+    idV -VMTL_list;                                                             #   List available volumes and sort
+  else                                                                          # << Scan particular volumes >>
+    { { "$[sVol]" } } "," "split" idAux -strop;                                 #   Parse volume list
+    idAux ( -type long ) idV /force -tconvert; idV ' idV =;                     #   Convert to numbers and transpose
+    idV { { 0 } } 0 0 idAux -gen_index;                                         #   Find number conversion errors
+    idAux 0 idAux -sortup; idAux 0 idAux -compress;                             #   Count number conversion errors
+    idAux.nrec 1 > if                                                           #   On number conversion errors >>
+      "\"$[sVol]\" is not a valid volume list." -ERROR; "\n\n" -MSG;            #     Complain about it
+      -1 return;                                                                #     Cannot continue program
+    end                                                                         #   <<
+  end                                                                           # <<
+  idV 0 idV -sortup;                                                            # Sort volume list
+  0 nV =; nV idV.nrec < while                                                   # Loop over volumes >>
+    ${idV[nV,0]} sScn sRcc sLng idAux -VMTL_volume;                             #   Scan for turns matching criteria
+    idAux idTrn -cat;                                                           #   Collect
+    nV ++=;                                                                     #   Next volume
+  end                                                                           # <<
+  "\n"                                                                    -MSG; # Protocol
+  idTrn -VMTL_check;                                                            # Check turns
+
+  "\n\n// DB.xtp lat complete.\n"                                         -MSG; # Protocol
+  0 return;                                                                     # Ok
+}
+
+## Extension to DB.xtp
+function -CMD_DB_imp()
+{
+  data idV;                                                                     # Volume list
+  data idReadme; { { "Folders imported by DB.xtp imp" } } idReadme =;           # Readme file
+  data idAux;                                                                   # Auxiliary data instance
+  var  nV;                                                                      # Volume counter
+  var  sDirVol; ( "dir" "." "S" -CFG_get_ex ) sDirVol =;                        # Volume folder
+  var  sCmd;                                                                    # Shell command for import
+  "\n\n// Verbmobil Database Import"                                      -MSG; # Protocol
+  "\n   - Volume dir    : ${sDirVol}"                                     -MSG; # Protocol
+  var sDirSig; ( "sig" "" -CFG_get_path ) sDirSig =;                            # Get signal folder
+  var sDirLab; ( "lab" "" -CFG_get_path ) sDirLab =;                            # Get label folder
+  .__CFG_bNwr if "\n   - Write protect : " "ON" -COLOR_yellow + -MSG; end       # Echo write protection 
+  
+  ## Find volumes and prepare output folders                                    # -------------------------------------
+  sDirVol "VM*.?" FALSE idV -SH_find;                                           # Find VM volumes
+  idV "?VM?_cd" "replace" idAux -strop;                                         # Make volume name
+  idAux "." "split" idAux -strop;                                               # ...
+  :idAux[0]: idV -join;                                                         # Add volume name
+  .__UTL_nVlevel 1 > if idV -print; end                                         # Print volume list
+  "${sDirSig}/README" "ascii" idReadme stdfile -export;                         # Make signal directory
+  "${sDirLab}/README" "ascii" idReadme stdfile -export;                         # Make label directory
+
+  ## Import volumes                                                             # -------------------------------------
+  "\n\n   Importing ${idV.nrec} volumes"                                  -MSG; # Protocol
+  nV idV.nrec < while                                                           # Loop over volumes >>
+    "\n   - Volume ${idV[nV,0]} is ${idV[nV,1]} "                         -MSG; #   Protocol
+    "WIN32" ?platform if                                                        #   On Windoze >>
+      "..." ( " IMPORT NOT IMPLEMENTED" -COLOR_red ) +                    -MSG; #     Protocol
+    else                                                                        #   << On other OSes >>
+      sDirSig -cd;                                                    "." -MSG; #     Change to signal folder
+      "ln -sf $[sDirVol]/${idV[nV,0]}/data ${idV[nV,1]}" sCmd =;                #     Signal import command
+      ( "\n     - " sCmd + )                                             -MSG2; #     Protocol
+      .__CFG_bNwr not if                                                        #     Write protection off >>
+        "${idV[nV,1]}" -SH_rm;                                        "." -MSG; #       Remove current link
+        sCmd -system;                                                 "." -MSG; #       Link to volume folder
+      end                                                                       #     <<
+      sDirLab -cd;                                                    "." -MSG; #     Change to label folder
+      "ln -sf $[sDirVol]/${idV[nV,0]}/par ${idV[nV,1]}" sCmd =;                 #     Label import command
+      ( "\n     - " sCmd + )                                             -MSG2; #     Protocol
+      .__CFG_bNwr not if                                                        #     Write protection off >>
+        "${idV[nV,1]}" -SH_rm;                                        "." -MSG; #       Remove current link
+        sCmd -system;                                                 "." -MSG; #       Link to volume folder
+      end                                                                       #     <<
+      " LINKED" -MSG;                                                           #     Protocol
+    end                                                                         #   <<
+    nV ++=;                                                                     #   Next volume
+  end                                                                           # <<
+  "\n   done."                                                            -MSG; # Protocol
+  "\n\n// DB.xtp imp complete.\n"                                         -MSG; # Protocol
+  0 return;                                                                     # Ok
+}
+
+## -- FUNCTION OVERWRITES ------------------------------------------------------
+
+".-CMD_DB_help" "" ?instance if /disarm -VM_DB_help /disarm -CMD_DB_help =; end
+
+## EOF
