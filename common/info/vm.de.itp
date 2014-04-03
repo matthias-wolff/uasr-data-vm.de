@@ -27,6 +27,7 @@ end                                                                             
 ##         <code>FALSE</code> if it denotes a VM1 CD
 function -VM_cd_type(nCdid)
 {
+3 return;
   nCdid 14 <= if 1 return; end
   nCdid 24 <= if 2 return; end
   nCdid 30 == if 2 return; end
