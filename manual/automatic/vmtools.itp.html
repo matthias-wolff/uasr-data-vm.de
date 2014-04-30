@@ -1,0 +1,947 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- UASR: Unified Approach to Speech Synthesis and Recognition
+<
+<    AUTHOR : n/a
+<    PACKAGE: manual
+<
+<    Copyright 2013 UASR contributors (see COPYRIGHT file)
+<    - Chair of System Theory and Speech Technology, TU Dresden
+<    - Chair of Communications Engineering, BTU Cottbus
+<
+<    This file is part of UASR.
+<
+<    UASR is free software: you can redistribute it and/or modify it under the
+<    terms of the GNU Lesser General Public License as published by the Free
+<    Software Foundation, either version 3 of the License, or (at your option)
+<    any later version.
+<
+<    UASR is distributed in the hope that it will be useful, but WITHOUT ANY
+<    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<    FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+<    more details.
+<
+<    You should have received a copy of the GNU Lesser General Public License
+<    along with UASR. If not, see [http://www.gnu.org/licenses/].
+-->
+<html>
+<head>
+  <meta http-equiv="Content-Type" content= "text/html; charset=iso-8859-1">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="description" content=   "UASR documentation - UASR script vmtools.itp">
+  <meta name="author" content="">
+  <meta name="generator" content="UASR_DOC">
+  <title>UASR script vmtools.itp</title>
+  <link rel=stylesheet type="text/css" href="../default.css">
+</head>
+<script type="text/javascript">
+
+  if (top==self)
+  {
+    var sLocation = "../index.html?automatic/vmtools.itp.html";
+    if (location.hash.length>0)
+      sLocation += ";"+location.hash.substr(1);
+    top.location = sLocation;
+  }
+</script>
+<script type="text/javascript" src="../default.js"></script>
+<script type="text/javascript">__sRootPath="../..";</script>
+<body>
+
+  <div id="clp_vmtools.itp">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        UASR script <span class="mid">vmtools.itp</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('','vmtools.itp','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden">General</td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><nobr><b>vmtools</b> </nobr></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Author</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Matthias Wolff
+</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Synopsis</h3>
+    <p>Verbmobil data base management tool kit
+ </p>
+  <!--{{ CUSTOM_DOC -->
+  <!--}} CUSTOM_DOC -->
+  <a name="functions"></a><h3>Functions</h3>
+  <table cellSpacing="0" cellPadding="4" border="0">
+    <tr>
+      <td class="rowgroup" colSpan="2">Functions</td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VMTL_list"><code class="link">-VMTL_list</code></a></td>
+      <td><code><b>-VMTL_list</b>(idV)</code><br>&nbsp;<br> Lists the Verbmobil CD-ROM volumes.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VMTL_banned"><code class="link">-VMTL_banned</code></a></td>
+      <td><code><b>-VMTL_banned</b></code><br>&nbsp;<br> Returns a list of banned turns.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VMTL_info"><code class="link">-VMTL_info</code></a></td>
+      <td><code><b>-VMTL_info</b>(idTl)</code><br>&nbsp;<br> Classifies elements of a turn list for dialog and speaker and counts the
+ different elements of these categories.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VMTL_load"><code class="link">-VMTL_load</code></a></td>
+      <td><code><b>-VMTL_load</b>(idTl)</code><br>&nbsp;<br> Loads the turn list <code>&lt;idTl&gt;.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VMTL_disjoint"><code class="link">-VMTL_disjoint</code></a></td>
+      <td><code><b>-VMTL_disjoint</b>(idTl1,idTl2)</code><br>&nbsp;<br> Checks if two turn lists are disjoint.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VMTL_sort"><code class="link">-VMTL_sort</code></a></td>
+      <td><code><b>-VMTL_sort</b>(idSrc,idDst)</code><br>&nbsp;<br> Sorts a turn list ascending by (1) CD index, (2) dialog name and (3) turn
+ index.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VMTL_volume"><code class="link">-VMTL_volume</code></a></td>
+      <td><code><b>-VMTL_volume</b>(nCd,sScn,sRcc,sLng,idTl)</code><br>&nbsp;<br> List usable turns of one Verbmobil CD-ROM.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VMTL_check"><code class="link">-VMTL_check</code></a></td>
+      <td><code><b>-VMTL_check</b>(idTl)</code><br>&nbsp;<br> Checks if signal and partiture files of a set of turn are existing and
+ valid.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VM_DB_help"><code class="link">-VM_DB_help</code></a></td>
+      <td><code><b>-VM_DB_help</b></code><br>&nbsp;<br> DB.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-CMD_DB_cds"><code class="link">-CMD_DB_cds</code></a></td>
+      <td><code><b>-CMD_DB_cds</b></code><br>&nbsp;<br> TODO: Check if covered by CHK.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-CMD_DB_ctl"><code class="link">-CMD_DB_ctl</code></a></td>
+      <td><code><b>-CMD_DB_ctl</b></code><br>&nbsp;<br> TODO: Check if covered by CHK.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-CMD_DB_lat"><code class="link">-CMD_DB_lat</code></a></td>
+      <td><code><b>-CMD_DB_lat</b></code><br>&nbsp;<br> Extension to DB.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-CMD_DB_imp"><code class="link">-CMD_DB_imp</code></a></td>
+      <td><code><b>-CMD_DB_imp</b></code><br>&nbsp;<br> Extension to DB.
+      </td>
+    </tr>
+  </table>
+  </div>
+  </div>
+  <div id="clp_-VMTL_list">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VMTL_list</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VMTL_list','-VMTL_list','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VMTL_list</b>(idV)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(16)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Lists the Verbmobil CD-ROM volumes.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idV</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Will be filled a list of CD numbers
+
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+  <div id="clp_-VMTL_banned">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VMTL_banned</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VMTL_banned','-VMTL_banned','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VMTL_banned</b></code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(35)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Returns a list of banned turns.
+
+    <h3>Return value</h3> List of banned turns.
+
+  </div>
+  </div>
+  <div id="clp_-VMTL_info">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VMTL_info</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VMTL_info','-VMTL_info','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VMTL_info</b>(idTl)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(122)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Classifies elements of a turn list for dialog and speaker and counts the
+ different elements of these categories.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idTl</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Turn list
+
+      </td>
+    </tr>  </table>
+    <h3>Return value</h3> A data instance containing information about the turn list.
+
+  </div>
+  </div>
+  <div id="clp_-VMTL_load">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VMTL_load</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VMTL_load','-VMTL_load','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VMTL_load</b>(idTl)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(154)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Loads the turn list <code>&lt;idTl&gt;.flst</code> from the file lists
+ directory. The file list directory is defined in the configuration file.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idTl</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Will be filled with the turn list
+
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+  <div id="clp_-VMTL_disjoint">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VMTL_disjoint</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VMTL_disjoint','-VMTL_disjoint','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VMTL_disjoint</b>(idTl1,idTl2)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(171)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Checks if two turn lists are disjoint.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idTl1</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Turn list 1
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idTl2</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Turn list 2
+
+      </td>
+    </tr>  </table>
+    <h3>Return value</h3> <code>TRUE</code> if the lists are disjoint, <code>FALSE</code>
+         otherwise
+
+  </div>
+  </div>
+  <div id="clp_-VMTL_sort">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VMTL_sort</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VMTL_sort','-VMTL_sort','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VMTL_sort</b>(idSrc,idDst)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(192)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Sorts a turn list ascending by (1) CD index, (2) dialog name and (3) turn
+ index.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idSrc</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Source turn list
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idDst</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Destination turn list, may be identical with <code>idSrc</code>
+
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+  <div id="clp_-VMTL_volume">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VMTL_volume</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VMTL_volume','-VMTL_volume','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VMTL_volume</b>(nCd,sScn,sRcc,sLng,idTl)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(284)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> List usable turns of one Verbmobil CD-ROM.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">number&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>nCd</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Verbmobil CD number (1-5, 6, 7, 12, 14, 15, 20-22, 24, 29, 30, 32,
+          38, 39, 46-49, 51-53, 55-59)
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">string&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sScn</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Verbmobil scenario code:
+          <table cellpadding="2">
+            <tr><td class="hidden">"a"</td><td class="hidden">: Main</td></tr>
+            <tr><td class="hidden">"b"</td><td class="hidden">: Information desk</td></tr>
+            <tr><td class="hidden">"c"</td><td class="hidden">: Remote maintenance</td></tr>
+            <tr><td class="hidden">"d"</td><td class="hidden">: Verbmobil I</td></tr>
+            <tr><td class="hidden">"n"</td><td class="hidden">: Noise</td></tr>
+            <tr><td class="hidden">"?"</td><td class="hidden">: All scenarios</td></tr>
+          </table>
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">string&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sRcc</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Recording conditions code:
+          <table cellpadding="2">
+            <tr><td class="hidden">"c"</td><td class="hidden">: Close mic</td></tr>
+            <tr><td class="hidden">"r"</td><td class="hidden">: Room mic</td></tr>
+            <tr><td class="hidden">"t"</td><td class="hidden">: Telephone</td></tr>
+            <tr><td class="hidden">"?"</td><td class="hidden">: All conditions</td></tr>
+          </table>
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">string&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sLng</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Language code:
+          <table cellpadding="2">
+            <tr><td class="hidden">"GER"</td><td class="hidden">: German</td></tr>
+            <tr><td class="hidden">"ENG"</td><td class="hidden">: American English</td></tr>
+            <tr><td class="hidden">"JAP"</td><td class="hidden">: Japanese</td></tr>
+            <tr><td class="hidden">"*"  </td><td class="hidden">: All languages</td></tr>
+          </table>
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idTl</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Will be filled with the list of matching turns in the format
+          <code>_cdN[N]/DDDDS/DDDDSRMC_TTT[_LLL]</code> with:
+          <table cellpadding="2">
+            <tr>
+              <td class="hidden"><code>N[N]</code></td>
+              <td class="hidden">: CD id (one or two digits)</td>
+            </tr>
+            <tr>
+              <td class="hidden"><code>DDDD</code></td>
+              <td class="hidden">: Dialog id (four characters)</td>
+            </tr>
+            <tr>
+              <td class="hidden"><code>S</code></td>
+              <td class="hidden">: Scenario code (one character,
+                see parameter <code>sScn</code>)</td>
+            </tr>
+            <tr>
+              <td class="hidden"><code>R</code></td>
+              <td class="hidden">: Recording condition code (one character,
+                see parameter <code>sRcc</code>)</td>
+            </tr>
+            <tr>
+              <td class="hidden"><code>M</code></td>
+              <td class="hidden">: Microphone type (one character, see <a
+              href="../../techdocs/003-VM_Database.html">Techdoc 003</a>)</td>
+            </tr>
+            <tr>
+              <td class="hidden"><code>C</code></td>
+              <td class="hidden">: Channel (one digit)</td>
+            </tr>
+            <tr>
+              <td class="hidden"><code>TTT</code></td>
+              <td class="hidden">: Zero-based turn index in dialog</td>
+            </tr>
+            <tr>
+              <td class="hidden"><code>LLL</code></td>
+              <td class="hidden">: Language code (three characters, see
+                parameter <code>sLng</code>)</td>
+            </tr>
+          </table>
+
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+  <div id="clp_-VMTL_check">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VMTL_check</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VMTL_check','-VMTL_check','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VMTL_check</b>(idTl)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(369)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Checks if signal and partiture files of a set of turn are existing and
+ valid.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idTl</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Turn list (the function may change this list removing invalid turns)
+
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+  <div id="clp_-VM_DB_help">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VM_DB_help</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VM_DB_help','-VM_DB_help','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VM_DB_help</b></code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(429)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> DB.xtp help function
+
+  </div>
+  </div>
+  <div id="clp_-CMD_DB_cds">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-CMD_DB_cds</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-CMD_DB_cds','-CMD_DB_cds','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-CMD_DB_cds</b></code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(535)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> TODO: Check if covered by CHK.xtp!
+
+  </div>
+  </div>
+  <div id="clp_-CMD_DB_ctl">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-CMD_DB_ctl</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-CMD_DB_ctl','-CMD_DB_ctl','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-CMD_DB_ctl</b></code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(585)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> TODO: Check if covered by CHK.xtp!
+
+  </div>
+  </div>
+  <div id="clp_-CMD_DB_lat">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-CMD_DB_lat</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-CMD_DB_lat','-CMD_DB_lat','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-CMD_DB_lat</b></code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(598)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Extension to DB.xtp
+
+  </div>
+  </div>
+  <div id="clp_-CMD_DB_imp">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-CMD_DB_imp</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-CMD_DB_imp','-CMD_DB_imp','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-CMD_DB_imp</b></code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vmtools.itp(635)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Extension to DB.xtp
+
+  </div>
+  </div>
+<div class="footer">End of page</div>
+</body>
+</html>
+

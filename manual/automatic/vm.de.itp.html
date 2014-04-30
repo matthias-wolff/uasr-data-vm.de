@@ -1,0 +1,579 @@
+<!DOCTYPE HTML PUBLIC "-//W3C//DTD HTML 4.0 Transitional//EN">
+<!-- UASR: Unified Approach to Speech Synthesis and Recognition
+<
+<    AUTHOR : n/a
+<    PACKAGE: manual
+<
+<    Copyright 2013 UASR contributors (see COPYRIGHT file)
+<    - Chair of System Theory and Speech Technology, TU Dresden
+<    - Chair of Communications Engineering, BTU Cottbus
+<
+<    This file is part of UASR.
+<
+<    UASR is free software: you can redistribute it and/or modify it under the
+<    terms of the GNU Lesser General Public License as published by the Free
+<    Software Foundation, either version 3 of the License, or (at your option)
+<    any later version.
+<
+<    UASR is distributed in the hope that it will be useful, but WITHOUT ANY
+<    WARRANTY; without even the implied warranty of MERCHANTABILITY or FITNESS
+<    FOR A PARTICULAR PURPOSE. See the GNU Lesser General Public License for
+<    more details.
+<
+<    You should have received a copy of the GNU Lesser General Public License
+<    along with UASR. If not, see [http://www.gnu.org/licenses/].
+-->
+<html>
+<head>
+  <meta http-equiv="Content-Type" content= "text/html; charset=iso-8859-1">
+  <meta http-equiv="Content-Style-Type" content="text/css">
+  <meta name="description" content=   "UASR documentation - UASR script vm.de.itp">
+  <meta name="author" content="">
+  <meta name="generator" content="UASR_DOC">
+  <title>UASR script vm.de.itp</title>
+  <link rel=stylesheet type="text/css" href="../default.css">
+</head>
+<script type="text/javascript">
+
+  if (top==self)
+  {
+    var sLocation = "../index.html?automatic/vm.de.itp.html";
+    if (location.hash.length>0)
+      sLocation += ";"+location.hash.substr(1);
+    top.location = sLocation;
+  }
+</script>
+<script type="text/javascript" src="../default.js"></script>
+<script type="text/javascript">__sRootPath="../..";</script>
+<body>
+
+  <div id="clp_vm.de.itp">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        UASR script <span class="mid">vm.de.itp</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('','vm.de.itp','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden">General</td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><nobr><b>vm.de</b> </nobr></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Author</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Matthias Wolff
+</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Synopsis</h3>
+    <p>Verbmobil data base functions
+ </p>
+  <!--{{ CUSTOM_DOC -->
+  <!--}} CUSTOM_DOC -->
+  <a name="functions"></a><h3>Functions</h3>
+  <table cellSpacing="0" cellPadding="4" border="0">
+    <tr>
+      <td class="rowgroup" colSpan="2">Functions</td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VM_cd_type"><code class="link">-VM_cd_type</code></a></td>
+      <td><code><b>-VM_cd_type</b>(nCdid)</code><br>&nbsp;<br> Determines the type of the specified Vermobil CD.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-VM_parse_turn_id"><code class="link">-VM_parse_turn_id</code></a></td>
+      <td><code><b>-VM_parse_turn_id</b>(sId,idId)</code><br>&nbsp;<br> <code>_cd&lt;CdId&gt;[/&lt;DialogId&gt;[/&lt;SignalFile&gt;[_&lt;TurnId&gt;_&lt;SpeakerId&gt;]]]</code>
+.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-SIG_import_vm"><code class="link">-SIG_import_vm</code></a></td>
+      <td><code><b>-SIG_import_vm</b>(sDir,sId,idSig)</code><br>&nbsp;<br> Imports the signal data of one VerbMobil turn.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-LAB_import_vm"><code class="link">-LAB_import_vm</code></a></td>
+      <td><code><b>-LAB_import_vm</b>(sDir,sTid,idLab)</code><br>&nbsp;<br> Imports the phonetic signal labels of one VerbMobil turn.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-TRL_import_vm"><code class="link">-TRL_import_vm</code></a></td>
+      <td><code><b>-TRL_import_vm</b>(sDir,sTid,idTrl)</code><br>&nbsp;<br> Imports the transliteration of one VerbMobil turn.
+      </td>
+    </tr>
+    <tr>
+      <td><a href="#clp_-LX_import_vm"><code class="link">-LX_import_vm</code></a></td>
+      <td><code><b>-LX_import_vm</b>(sFile,idLex)</code><br>&nbsp;<br> Imports the VerbMobil lexicon.
+      </td>
+    </tr>
+  </table>
+  </div>
+  </div>
+  <div id="clp_-VM_cd_type">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VM_cd_type</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VM_cd_type','-VM_cd_type','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VM_cd_type</b>(nCdid)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vm.de.itp(28)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> <p>Determines the type of the specified Vermobil CD. The type encodes how
+ the signal data are stored on the CD. There are three different types:</p>
+ <table class="indent">
+   <tr><th>Type</th><th>VM Part</th><th>Description</th></tr>
+   <tr><td>1</td><td>I</td><td>One PhonDat signal file per turn, 8.3 file name</td></tr>
+   <tr><td>2</td><td>II</td><td>One NIST signal file per speaker, marker files</td></tr>
+   <tr><td>3</td><td>II</td><td>One NIST signal file per turn</td></tr>
+ </table>
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">number&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>nCdid</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          CD index
+
+      </td>
+    </tr>  </table>
+    <h3>Return value</h3> <code>TRUE</code> if the CD index denotes a VM2 CD,
+         <code>FALSE</code> if it denotes a VM1 CD
+
+  </div>
+  </div>
+  <div id="clp_-VM_parse_turn_id">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-VM_parse_turn_id</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-VM_parse_turn_id','-VM_parse_turn_id','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-VM_parse_turn_id</b>(sId,idId)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vm.de.itp(40)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> <code>_cd&lt;CdId&gt;[/&lt;DialogId&gt;[/&lt;SignalFile&gt;[_&lt;TurnId&gt;_&lt;SpeakerId&gt;]]]</code>
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sId</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idId</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+  <div id="clp_-SIG_import_vm">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-SIG_import_vm</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-SIG_import_vm','-SIG_import_vm','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-SIG_import_vm</b>(sDir,sId,idSig)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vm.de.itp(72)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Imports the signal data of one VerbMobil turn.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">string&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sDir</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Path to signal files
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">string&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sId</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          VerbMobil turn identifier. The format is
+          <code>_cdC[C]/DDDDD/FFFFFFFF_TTT_SSS[_LLL]</code> (<code>C</code>:
+          CD index, <code>D</code>: dialoge index, <code>F</code> signal file
+          name, <code>T</code>: turn index, <code>S</code>: speaker code,
+          <code>L</code>: optional language code)
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idSig</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Data instance to be filled with signal
+
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+  <div id="clp_-LAB_import_vm">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-LAB_import_vm</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-LAB_import_vm','-LAB_import_vm','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-LAB_import_vm</b>(sDir,sTid,idLab)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vm.de.itp(160)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> <p>Imports the phonetic signal labels of one VerbMobil turn.</p>
+ <h4>Structure of Result</h4>
+ <table class="indent">
+   <tr><th colspan="2">Component</th><th>Description</th></tr>
+   <tr><th>No.</th><th>Name</th><th> </th></tr>
+   <tr><td>0</td><td><code>&lt;sLid&gt;</code></td><td>Label name</td></tr>
+   <tr><td>0</td><td><code>POS</code></td><td>Label position (samples)</td></tr>
+   <tr><td>0</td><td><code>CNT</code></td><td>Label length (samples)</td></tr>
+ </table>
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">string&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sDir</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Path to label files
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">string&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sTid</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          <code>_cdC[C]/DDDDD/FFFFFFFF_TTT_SSS[_LLL]</code> (<code>C</code>:
+          CD index, <code>D</code>: dialoge index, <code>F</code> signal file
+          name, <code>T</code>: turn index, <code>S</code>: speaker code,
+          <code>L</code>: optional language code)
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idLab</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Data instance to be filled with labels
+
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+  <div id="clp_-TRL_import_vm">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-TRL_import_vm</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-TRL_import_vm','-TRL_import_vm','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-TRL_import_vm</b>(sDir,sTid,idTrl)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vm.de.itp(198)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Imports the transliteration of one VerbMobil turn. The result contains one
+ symbolic component filled with lexicon entries.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">string&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sDir</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Path to transliteration files
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">string&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sTid</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          <code>_cdC[C]/DDDDD/FFFFFFFF_TTT_SSS[_LLL]</code> (<code>C</code>:
+          CD index, <code>D</code>: dialoge index, <code>F</code> signal file
+          name, <code>T</code>: turn index, <code>S</code>: speaker code,
+          <code>L</code>: optional language code)
+
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">data&nbsp;
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idTrl</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">          Data instance to be filled with the transliteration
+
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+  <div id="clp_-LX_import_vm">
+  <table width="100%" cellpadding="0" cellspacing="0" border="0">
+    <tr>
+      <td nowrap width="25%" class="navbar">
+        Function <span class="mid">-LX_import_vm</span>
+      </td>
+      <td nowrap width="75%" class="navbar" style="text-align:right;">
+        <a class="navbar" href="javascript:__PrintSection('clp_-LX_import_vm','-LX_import_vm','..');"><img
+        src="../resources/print.gif" width="16" height="16" border="0" style="vertical-align:middle;"
+        alt="Print"></a> 
+        <a class="navbar" href="#functions">Functions</a>
+        <a class="navbar" href="#">Script</a>
+        <a class="navbar" href="index.html">Package</a>
+        <a class="navbar" href="../automatic/kwdindex.html">Keyword Index</a>
+        <a class="navbar" href="../automatic/fncindex.html">Function Index</a>
+        <a class="navbar" href="../home.html">Home</a>
+      </td>
+    </tr>
+  </table>
+  <div class="mframe">
+  <table cellSpacing="0" cellPadding="0" border="0"> 
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Signature</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden"><code><b>-LX_import_vm</b>(sFile,idLex)</code></td>
+    </tr>
+    <tr>
+      <td class="hidden"></td>
+      <td class="hidden">&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">Source</td>
+      <td class="hidden">:&nbsp;&nbsp;&nbsp;</td>
+      <td class="hidden">vm.de.itp(217)</td>
+    </tr>
+  </table>
+  </div>
+  <div class="mframe2">
+    <h3>Description</h3> Imports the VerbMobil lexicon.
+
+  <h3>Parameters</h3>
+  <table>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>sFile</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">
+      </td>
+    </tr>
+    <tr>
+      <td class="hidden">&nbsp;&nbsp;</td>
+      <td class="hidden">
+      </td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden"><code><b>idLex</b></code></td>
+      <td class="hidden">&nbsp;</td>
+      <td class="hidden">
+      </td>
+    </tr>  </table>
+  </div>
+  </div>
+<div class="footer">End of page</div>
+</body>
+</html>
+
