@@ -1,5 +1,29 @@
 #
 
+function -FEA_pfa_MCEP(idSig,idPM,idFea)
+{
+  ".nPfaCrate"  "uasr.pfa.crate"  "160"      -CFG_get_persistent;
+  ".nPfaWlen"   "uasr.pfa.wlen"   "400"      -CFG_get_persistent;
+  ".nPfaLen"    "uasr.pfa.len"    "512"      -CFG_get_persistent;
+  ".nPfaWtype"  "uasr.pfa.wtype"  "Blackman" -CFG_get_persistent;
+  ".nPfaGamma"  "uasr.pfa.gamma"  "-0.5"     -CFG_get_persistent;
+  ".nPfaLambda" "uasr.pfa.lambda" "0.47"     -CFG_get_persistent;
+  ".nPfaDim"    "uasr.pfa.dim"    "24"       -CFG_get_persistent;
+  .nPfaGamma  .nPfaGamma  -vset;
+  .nPfaLambda .nPfaLambda -vset;
+
+  data idZ;
+  idSig
+    .nPfaWlen .nPfaCrate frame
+    .nPfaWlen .nPfaLen .nPfaWtype FALSE window idFea =;
+  idFea ' abs sum 0 .== ' idZ =;
+  idFea
+    .nPfaLambda .nPfaDim mcep
+    idFea =;
+  idZ idFea -dmark;
+  0 0 idFea /mark -fill;
+}
+
 function -FEA_pfa_MGCEP(idSig,idPM,idFea)
 {
   ".nPfaCrate"  "uasr.pfa.crate"  "160"      -CFG_get_persistent;
