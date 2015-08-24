@@ -33,7 +33,7 @@ function -FEA_pfa_MGCEPFIX(idSig,idPM,idFea)
   ".nPfaGamma"  "uasr.pfa.gamma"  "-0.5"     -CFG_get_persistent;
   ".nPfaLambda" "uasr.pfa.lambda" "0.47"     -CFG_get_persistent;
   ".nPfaDim"    "uasr.pfa.dim"    "24"       -CFG_get_persistent;
-  ".nMgcepNrm"  "uasr.mgcep.nrm"  "2"        -CFG_get_persistent;
+  ".nMgcepNrm"  "uasr.mgcep.nrm"  "8"        -CFG_get_persistent;
   .nPfaGamma  .nPfaGamma  -vset;
   .nPfaLambda .nPfaLambda -vset;
 
