@@ -8,6 +8,7 @@ function -FEA_pfa_MGCEP(idSig,idPM,idFea)
   ".nPfaWtype"  "uasr.pfa.wtype"  "Blackman" -CFG_get_persistent;
   ".nPfaGamma"  "uasr.pfa.gamma"  "-0.5"     -CFG_get_persistent;
   ".nPfaLambda" "uasr.pfa.lambda" "0.47"     -CFG_get_persistent;
+  ".nPfaOrder"  "uasr.pfa.order"  "24"       -CFG_get_persistent;
   ".nPfaDim"    "uasr.pfa.dim"    "24"       -CFG_get_persistent;
   .nPfaGamma  .nPfaGamma  -vset;
   .nPfaLambda .nPfaLambda -vset;
@@ -18,10 +19,11 @@ function -FEA_pfa_MGCEP(idSig,idPM,idFea)
     .nPfaWlen .nPfaLen .nPfaWtype FALSE window idFea =;
   idFea ' abs sum 0 .== ' idZ =;
   idFea
-    .nPfaGamma .nPfaLambda .nPfaDim mgcep
+    .nPfaGamma .nPfaLambda .nPfaOrder mgcep
     idFea =;
   idZ idFea -dmark;
   0 0 idFea /mark -fill;
+	idFea .nPfaDim :idFea.dim-1-.nPfaDim: idFea -delete;
 }
 
 function -FEA_pfa_MGCEPFIX(idSig,idPM,idFea)
@@ -32,6 +34,7 @@ function -FEA_pfa_MGCEPFIX(idSig,idPM,idFea)
   ".nPfaWtype"  "uasr.pfa.wtype"  "Blackman" -CFG_get_persistent;
   ".nPfaGamma"  "uasr.pfa.gamma"  "-0.5"     -CFG_get_persistent;
   ".nPfaLambda" "uasr.pfa.lambda" "0.47"     -CFG_get_persistent;
+  ".nPfaOrder"  "uasr.pfa.order"  "24"       -CFG_get_persistent;
   ".nPfaDim"    "uasr.pfa.dim"    "24"       -CFG_get_persistent;
   ".nMgcepNrm"  "uasr.mgcep.nrm"  "8"        -CFG_get_persistent;
   .nPfaGamma  .nPfaGamma  -vset;
@@ -42,10 +45,11 @@ function -FEA_pfa_MGCEPFIX(idSig,idPM,idFea)
     .nPfaWlen .nPfaLen .nPfaWtype FALSE window idFea =;
   :round(idFea*32767): -type short idFea -tconvert;
   idFea
-    .nPfaGamma .nPfaLambda .nPfaDim mgcep
+    .nPfaGamma .nPfaLambda .nPfaOrder mgcep
     idFea =;
   idFea -type double idFea -tconvert;
   :idFea/32767*.nMgcepNrm: idFea =;
+	idFea .nPfaDim :idFea.dim-1-.nPfaDim: idFea -delete;
 }
 
 "-CFG_get" NULL ?instance "-FEA_pfa" "function" ?instance && if;
