@@ -648,40 +648,45 @@ function -CMD_DB_imp()
   
   ## Find volumes and prepare output folders                                    # -------------------------------------
   sDirVol "VM*.?" FALSE idV -SH_find;                                           # Find VM volumes
+  idV "?$[sDirVol]?" "replace" idV -strop;
   idV "?VM?_cd" "replace" idAux -strop;                                         # Make volume name
   idAux "." "split" idAux -strop;                                               # ...
   :idAux[0]: idV -join;                                                         # Add volume name
-  .__UTL_nVlevel 1 > if idV -print; end                                         # Print volume list
-  "${sDirSig}/README" "ascii" idReadme stdfile -export;                         # Make signal directory
-  "${sDirLab}/README" "ascii" idReadme stdfile -export;                         # Make label directory
+  .__UTL_nVlevel 2 > if idV -print; end                                         # Print volume list
+  .__CFG_bNwr not if                                                            # Write protected off >>
+    "${sDirSig}/README" "ascii" idReadme stdfile -export;                       #   Make signal directory
+    "${sDirLab}/README" "ascii" idReadme stdfile -export;                       #   Make label directory
+  end                                                                           # <<
 
   ## Import volumes                                                             # -------------------------------------
-  "\n\n   Importing ${idV.nrec} volumes"                                  -MSG; # Protocol
+  "\n\n   Importing ${idV.nrec} volumes"                                  -MSG; # Log
   nV idV.nrec < while                                                           # Loop over volumes >>
-    "\n   - Volume ${idV[nV,0]} is ${idV[nV,1]} "                         -MSG; #   Protocol
+    "\n   - Volume ${idV[nV,0]} is ${idV[nV,1]} "                         -MSG; #   Log
     "WIN32" ?platform if                                                        #   On Windoze >>
-      "..." ( " IMPORT NOT IMPLEMENTED" -COLOR_red ) +                    -MSG; #     Protocol
+      "..." ( " IMPORT NOT IMPLEMENTED" -COLOR_red ) +                    -MSG; #     Log
     else                                                                        #   << On other OSes >>
       sDirSig -cd;                                                    "." -MSG; #     Change to signal folder
       "ln -sf $[sDirVol]/${idV[nV,0]}/data ${idV[nV,1]}" sCmd =;                #     Signal import command
-      ( "\n     - " sCmd + )                                             -MSG2; #     Protocol
+      ( "\n     - " sCmd + )                                             -MSG2; #     Log
       .__CFG_bNwr not if                                                        #     Write protection off >>
         "${idV[nV,1]}" -SH_rm;                                        "." -MSG; #       Remove current link
         sCmd -system;                                                 "." -MSG; #       Link to volume folder
       end                                                                       #     <<
       sDirLab -cd;                                                    "." -MSG; #     Change to label folder
       "ln -sf $[sDirVol]/${idV[nV,0]}/par ${idV[nV,1]}" sCmd =;                 #     Label import command
-      ( "\n     - " sCmd + )                                             -MSG2; #     Protocol
+      ( "\n     - " sCmd + )                                             -MSG2; #     Log
       .__CFG_bNwr not if                                                        #     Write protection off >>
         "${idV[nV,1]}" -SH_rm;                                        "." -MSG; #       Remove current link
         sCmd -system;                                                 "." -MSG; #       Link to volume folder
+        " LINKED"                                                         -MSG; #       Log
+      else                                                                      #     << Write protection on >>
+        " SKIPPED (write protected on)" -COLOR_yellow                     -MSG; #       Log
       end                                                                       #     <<
-      " LINKED" -MSG;                                                           #     Protocol
     end                                                                         #   <<
     nV ++=;                                                                     #   Next volume
   end                                                                           # <<
-  "\n   done."                                                            -MSG; # Protocol
-  "\n\n// DB.xtp imp complete.\n"                                         -MSG; # Protocol
+  "\n   done."                                                            -MSG; # Log
+  "\n\n// DB.xtp imp complete.\n"                                         -MSG; # Log
   0 return;                                                                     # Ok
 }
 
