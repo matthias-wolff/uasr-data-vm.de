@@ -375,6 +375,7 @@ function -VMTL_check(idTl)
   var  nTst;                                                                    # Total sample time [s]
   var  h;                                                                       # Total sample time - hours
   var  m;                                                                       # Total sample time - minutes
+  var  s;                                                                       # Total sample time - seconds
   var  nErr;                                                                    # Error state
   data idSig;                                                                   # Signal of current turn
   data idLab;                                                                   # Phoneme labels of current turn
@@ -414,12 +415,13 @@ function -VMTL_check(idTl)
   idTl -VMTL_info idTinfo =;                                                    # Get turn list info
   :h=ent(nTst/3600);                                                            # Compute hours of sample time
   :m=ent(nTst/60)-h*60;                                                         # Compute minutes of sample time
+  :s=nTst-h*3600-m*60;                                                          # Compute seconds of sample time
   "\n\n   Summary"                                                        -MSG; # Protocol
   "\n   Speakers  : ${idTinfo[0,1]}"                                      -MSG; # Protocol
   "\n   Dialogs   : ${idTinfo[0,0]}"                                      -MSG; # Protocol
   "\n   Turns     : ${idTl.nrec}"                                         -MSG; # Protocol
   "\n   - removed : ${nXXT-idTl.nrec} of ${nXXT}"                         -MSG; # Protocol
-  "\n   Total time: ${h}:${m}\""                                          -MSG; # Protocol
+  "\n   Total time: ${h}:${m}'${s}\""                                     -MSG; # Protocol
   "\n"                                                                    -MSG; # Protocol
 }
 
