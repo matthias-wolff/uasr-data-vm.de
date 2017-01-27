@@ -17,6 +17,7 @@ function -VMTL_list(idV)
 {
   data idAux;                                                                   # Auxilary data instance
   var  sDir;                                                                    # Folder
+  var  sCwd; -cwd sCwd =;                                                       # Save working directory
   "sig" "" -CFG_get_path sDir =;                                                # Get signal folder
   sDir -cd ?error not if                                                        # Change to signal folder, success >>
     "." "_cd*" FALSE idV -SH_find;                                              #   Find matching CD directories
@@ -27,6 +28,7 @@ function -VMTL_list(idV)
   end                                                                           # <<
   idV idAux idV -SET_union;                                                     # Union of lists
   idV "?_cd?" "replace" idV -strop;                                             # Trim
+  sCwd -cd;                                                                     # Restore working directory
 }
 
 ## Returns a list of banned turns.
@@ -240,6 +242,8 @@ function -VMTL_sort(idSrc,idDst)
 ##            <tr><td class="hidden">"JAP"</td><td class="hidden">: Japanese</td></tr>
 ##            <tr><td class="hidden">"*"  </td><td class="hidden">: All languages</td></tr>
 ##          </table>
+## @param sSpk string
+##          Three-character speaker code, "*" for all speakers.
 ## @param idTl data
 ##          Will be filled with the list of matching turns in the format
 ##          <code>_cdN[N]/DDDDS/DDDDSRMC_TTT[_LLL]</code> with:
@@ -281,12 +285,16 @@ function -VMTL_sort(idSrc,idDst)
 ##                parameter <code>sLng</code>)</td>
 ##            </tr>
 ##          </table>
-function -VMTL_volume(nCd,sScn,sRcc,sLng,idTl)
+function -VMTL_volume(nCd,sScn,sRcc,sLng,sSpk,idTl)
 {
   var  sSdir;                                                                   # Signal folder
   var  sPdir;                                                                   # Partiture folder
   var  sFilter;                                                                 # File name filter
+  var  sCwd;    -cwd sCwd =;                                                    # Save working directory
   data idTinfo;                                                                 # Turn list info
+  
+  ## Normalize arguments                                                        # -------------------------------------
+  "*" sSpk == if "???" sSpk =; end                                              # Correct speaker ID pattern
 
   ## List turns                                                                 # -------------------------------------
   "\n\n   Listing turns of VM-CD ${nCd}"                                  -MSG; # Protocol
@@ -295,7 +303,7 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,idTl)
 
   ## CD type 1                                                                  # -------------------------------------
   nCd -VM_cd_type 1 == if                                                       # CD type 1 >>
-    sPdir -cd ?error if leave; end                                              #   Change to partiture folder
+    sPdir -cd ?error if goto L_EXCEPTION; end                                   #   Change to partiture folder
     "????${sScn}[x${sRcc}]??_???_???*.par" sFilter =;                           #   Create file name filter
     "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                    #   Find matching partiture files
     idTl "?.par?" "replace" idTl -strop;                                        #   Remove ".par" from file names
@@ -306,7 +314,7 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,idTl)
     data idMar;                                                                 #   List of matching marker files
     data idAux;                                                                 #   Auxilary data instance
     var  nR;                                                                    #   Current record
-    sSdir -cd ?error if leave; end                                              #   Change to signal folder
+    sSdir -cd ?error if goto L_EXCEPTION; end                                   #   Change to signal folder
     "????${sScn}[x${sRcc}].mar" sFilter =;                                      #   Create file name filter
     "_cd${nCd}/" sFilter TRUE idMar -SH_find;                                   #   Find matching marker files
     idTl -reset; label L_MAR; nR idMar.nrec < if                                #   Loop over marker files >>
@@ -337,11 +345,11 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,idTl)
 
   ## CD type 3                                                                  # -------------------------------------
   nCd -VM_cd_type 3 == if                                                       # CD type 3 >>
-    sSdir -cd ?error if leave; end                                              #   Change to signal folder
-    "????${sScn}[x${sRcc}]??_???_???_${sLng}.nis" sFilter =;                    #   Create file name filter
+    sSdir -cd ?error if goto L_EXCEPTION; end                                   #   Change to signal folder
+    "????${sScn}[x${sRcc}]??_???_${sSpk}_${sLng}.nis" sFilter =;                #   Create file name filter
     "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                    #   Find matching signal files
     sLng "GER" == idTl -is_empty && if                                          #   German and no "_GER" turns found >>
-      "????${sScn}[x${sRcc}]??_???_???.nis" sFilter =;                          #     Create file name filter
+      "????${sScn}[x${sRcc}]??_???_${sSpk}.nis" sFilter =;                      #     Create file name filter
       "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                  #     Find matching signal files
     end                                                                         #   <<
     idTl "?.nis?" "replace" idTl -strop;                                        #   Remove ".nis" from file names
@@ -359,6 +367,9 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,idTl)
   "\n   - Dialogs       : ${idTinfo[0,0]}"                                -MSG; # Protocol
   "\n   - Turns         : ${idTl.nrec}"                                   -MSG; # Protocol
   "\n"                                                                    -MSG; # Protocol
+  
+label L_EXCEPTION;
+  sCwd -cd;
 }
 
 ## Checks if signal and partiture files of a set of turn are existing and
@@ -415,7 +426,7 @@ function -VMTL_check(idTl)
   idTl -VMTL_info idTinfo =;                                                    # Get turn list info
   :h=ent(nTst/3600);                                                            # Compute hours of sample time
   :m=ent(nTst/60)-h*60;                                                         # Compute minutes of sample time
-  :s=nTst-h*3600-m*60;                                                          # Compute seconds of sample time
+  :s=ent(nTst-h*3600-m*60);                                                     # Compute seconds of sample time
   "\n\n   Summary"                                                        -MSG; # Protocol
   "\n   Speakers  : ${idTinfo[0,1]}"                                      -MSG; # Protocol
   "\n   Dialogs   : ${idTinfo[0,0]}"                                      -MSG; # Protocol
@@ -474,6 +485,7 @@ function -VM_DB_help()
     "\n            ENG - English"                                       -MSG;
     "\n            JAP - Japanese"                                      -MSG;
     "\n            *   - All languages"                                 -MSG;
+    "\n       spk: Three-character speaker ID (default \"*\" for all)"  -MSG;
     "\n       rcc: Recording conditions of turns to list (default: c)"  -MSG;
     "\n            c   - Close mic"                                     -MSG;
     "\n            r   - Room mic"                                      -MSG;
@@ -610,18 +622,23 @@ function -CMD_DB_lat()
   data idAux;                                                                   # Auxiliary data instance
   var  nV;                                                                      # Verbmobil volume (CD) number
   var  sLng;  ( "lng" "GER"        "S" -CFG_get_ex ) sLng =;                    # Get language code
+  var  sSpk;  ( "spk" "*"          "S" -CFG_get_ex ) sSpk =;                    # Get speaker code
   var  sRcc;  ( "rcc" "c"          "S" -CFG_get_ex ) sRcc =;                    # Get recording condition code
   var  sScn;  ( "scn" "?"          "S" -CFG_get_ex ) sScn =;                    # Get scenario code
   var  sVol;  ( "vol" "*"          "S" -CFG_get_ex ) sVol =;                    # Get volume list
   var  sOut;  ( "out" "DB-lat.out" "S" -CFG_get_ex ) sOut =;                    # Output file
   var  bNch;  ( ( "nocheck" "" "S" -CFG_get_ex ) "true" == ) bNch -bset;        # Skip check
 
+  "\n   Output file     : "                                               -MSG; # Log
+  .__CFG_bNwr if "(none, write protect on)" -COLOR_yellow else sOut end   -MSG; # Log
+  "\n   File check      : " bNch if "OFF" -COLOR_yellow else "ON" end +   -MSG; # Log
+
   sVol "*" == if                                                                # Scan all available volumes >>
     idV -VMTL_list;                                                             #   List available volumes and sort
   else                                                                          # << Scan particular volumes >>
     { { "$[sVol]" } } "," "split" idAux -strop;                                 #   Parse volume list
     idAux ( -type long ) idV /force -tconvert; idV ' idV =;                     #   Convert to numbers and transpose
-    idV { { 0 } } 0 0 idAux -gen_index;                                         #   Find number conversion errors
+    idV { { 0 } } 0 0 idAux /noerror -gen_index;                                #   Find number conversion errors
     idAux 0 idAux -sortup; idAux 0 idAux -compress;                             #   Count number conversion errors
     idAux.nrec 1 > if                                                           #   On number conversion errors >>
       "\"$[sVol]\" is not a valid volume list." -ERROR; "\n\n" -MSG;            #     Complain about it
@@ -630,18 +647,18 @@ function -CMD_DB_lat()
   end                                                                           # <<
   idV 0 idV -sortup;                                                            # Sort volume list
   0 nV =; nV idV.nrec < while                                                   # Loop over volumes >>
-    ${idV[nV,0]} sScn sRcc sLng idAux -VMTL_volume;                             #   Scan for turns matching criteria
+    ${idV[nV,0]} sScn sRcc sLng sSpk idAux -VMTL_volume;                        #   Scan for turns matching criteria
     idAux idTrn -cat;                                                           #   Collect
     nV ++=;                                                                     #   Next volume
   end                                                                           # <<
   "\n"                                                                    -MSG; # Protocol
   bNch if                                                                       # No-check mode >>
-    "  Skipping turn check.\n" -COLOR_yellow -MSG;                              #   Log
+    "   Skipping turn check.\n" -COLOR_yellow -MSG;                             #   Log
   else                                                                          # <<
     idTrn -VMTL_check;                                                          #   Check turns
   end                                                                           # <<
 
-  "\n  Writing $[sOut] ..."                                               -MSG; # Log
+  "\n   Writing $[sOut] ..."                                              -MSG; # Log
   .__CFG_bNwr not if                                                            # Not write protected >>
     sOut "ascii" idTrn stdfile -export;                                         #   Write output file
     " done.\n"                                                            -MSG; #   Log
