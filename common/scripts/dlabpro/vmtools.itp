@@ -377,7 +377,7 @@ label L_EXCEPTION;
 ##
 ## @param idTl data
 ##          Turn list (the function may change this list removing invalid turns)
-function -VMTL_check(idTl)
+function -VMTL_check(idTl) #-VMTL_check(idTl,idLen,nMinLen,nMaxLen)
 {
   var  sSdir;                                                                   # Signal folder
   var  sPdir;                                                                   # Partiture folder
@@ -417,7 +417,7 @@ function -VMTL_check(idTl)
       continue;                                                                 #     Continue with next turn
     end                                                                         #   <<
     " passed"                                                            -MSG2; #   Protocol
-    idSig.nrec idSig.rinc * 1000 / nTst +=;                                     #   Accumulate total sample time
+    ( idSig.nrec idSig.rinc * 1000 / ) nTst +=;                                 #   Accumulate total sample time
     nT ++=;                                                                     #   End of loop
   end                                                                           # <<
   "\n  " -MSG2; "done"                                                    -MSG; # Protocol
