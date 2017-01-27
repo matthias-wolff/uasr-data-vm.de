@@ -597,14 +597,15 @@ function -CMD_DB_ctl()
 ## Extension to DB.xtp
 function -CMD_DB_lat()
 {
-  data idV;                                                                     # Volume list
-  data idTrn;                                                                   # Turn list
-  data idAux;                                                                   # Auxiliary data instance
-  var  nV;                                                                      # Verbmobil volume (CD) number
-  var  sLng;  ( "lng" "GER" "S" -CFG_get_ex ) sLng =;                           # Get language code
-  var  sRcc;  ( "rcc" "c"   "S" -CFG_get_ex ) sRcc =;                           # Get recording condition code
-  var  sScn;  ( "scn" "?"   "S" -CFG_get_ex ) sScn =;                           # Get scenario code
-  var  sVol;  ( "vol" "*"   "S" -CFG_get_ex ) sVol =;                           # Get volume list
+  data idV;                                                                           # Volume list
+  data idTrn;                                                                         # Turn list
+  data idAux;                                                                         # Auxiliary data instance
+  var  nV;                                                                            # Verbmobil volume (CD) number
+  var  sLng;  ( "lng" "GER" "S" -CFG_get_ex ) sLng =;                                 # Get language code
+  var  sRcc;  ( "rcc" "c"   "S" -CFG_get_ex ) sRcc =;                                 # Get recording condition code
+  var  sScn;  ( "scn" "?"   "S" -CFG_get_ex ) sScn =;                                 # Get scenario code
+  var  sVol;  ( "vol" "*"   "S" -CFG_get_ex ) sVol =;                                 # Get volume list
+  var  bNch;  ( "nocheck" "false" "S" -CFG_get_ex ) "true" == bNch -bset;             # Skip check
 
   sVol "*" == if                                                                # Scan all available volumes >>
     idV -VMTL_list;                                                             #   List available volumes and sort
@@ -625,7 +626,11 @@ function -CMD_DB_lat()
     nV ++=;                                                                     #   Next volume
   end                                                                           # <<
   "\n"                                                                    -MSG; # Protocol
-  idTrn -VMTL_check;                                                            # Check turns
+  bNch if
+    idTrn -VMTL_check;                                                            # Check turns
+  else
+    "Skipping turn check.\n" -COLOR_yellow -MSG;
+  end
 
   "\n\n// DB.xtp lat complete.\n"                                         -MSG; # Protocol
   0 return;                                                                     # Ok
