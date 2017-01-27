@@ -461,7 +461,12 @@ function -VM_DB_help()
   "\n\n   USAGE:"                                                       -MSG;
     "\n     DB.xtp lat <cfgfile> [<options>]"                           -MSG;
   "\n\n   REMARKS:"                                                     -MSG;
-    "\n     Special <key>s for DB.xtp imp <cfgfile>:"                   -MSG;
+    "\n     Special <key>s for DB.xtp lat <cfgfile>:"                   -MSG;
+    "\n       out: Output file (default: DB-lat.out)"                   -MSG; 
+    "\n            use -n to suppress output to file"                   -MSG;
+    "\n       nocheck: Skip check of turn files (default: false)"       -MSG;
+    "\n            false - Perform check"                               -MSG;
+    "\n            true  - Skip check (faster, but not recommended!)"   -MSG;
     "\n       lng: Language code of turns to list (default: GER)"       -MSG;
     "\n            GER - German"                                        -MSG;
     "\n            ENG - English"                                       -MSG;
@@ -479,6 +484,7 @@ function -VM_DB_help()
     "\n            d   - Verbmobil I"                                   -MSG;
     "\n            n   - Noise"                                         -MSG;
     "\n            ?   - All scenarios"                                 -MSG;
+    "\n       vol: Verbmobil CD number (default: all)"                  -MSG;
     "\n     See documentation of the Verbmobil database for details"    -MSG;
     "\n     on languages, recording conditions and scenarios."          -MSG;
   "\n\n   EXAMPLE:"                                                     -MSG;
@@ -597,15 +603,16 @@ function -CMD_DB_ctl()
 ## Extension to DB.xtp
 function -CMD_DB_lat()
 {
-  data idV;                                                                           # Volume list
-  data idTrn;                                                                         # Turn list
-  data idAux;                                                                         # Auxiliary data instance
-  var  nV;                                                                            # Verbmobil volume (CD) number
-  var  sLng;  ( "lng" "GER" "S" -CFG_get_ex ) sLng =;                                 # Get language code
-  var  sRcc;  ( "rcc" "c"   "S" -CFG_get_ex ) sRcc =;                                 # Get recording condition code
-  var  sScn;  ( "scn" "?"   "S" -CFG_get_ex ) sScn =;                                 # Get scenario code
-  var  sVol;  ( "vol" "*"   "S" -CFG_get_ex ) sVol =;                                 # Get volume list
-  var  bNch;  ( "nocheck" "false" "S" -CFG_get_ex ) "true" == bNch -bset;             # Skip check
+  data idV;                                                                     # Volume list
+  data idTrn;                                                                   # Turn list
+  data idAux;                                                                   # Auxiliary data instance
+  var  nV;                                                                      # Verbmobil volume (CD) number
+  var  sLng;  ( "lng" "GER"        "S" -CFG_get_ex ) sLng =;                    # Get language code
+  var  sRcc;  ( "rcc" "c"          "S" -CFG_get_ex ) sRcc =;                    # Get recording condition code
+  var  sScn;  ( "scn" "?"          "S" -CFG_get_ex ) sScn =;                    # Get scenario code
+  var  sVol;  ( "vol" "*"          "S" -CFG_get_ex ) sVol =;                    # Get volume list
+  var  sOut;  ( "out" "DB-lat.out" "S" -CFG_get_ex ) sOut =;                    # Output file
+  var  bNch;  ( ( "nocheck" "" "S" -CFG_get_ex ) "true" == ) bNch -bset;        # Skip check
 
   sVol "*" == if                                                                # Scan all available volumes >>
     idV -VMTL_list;                                                             #   List available volumes and sort
@@ -626,11 +633,19 @@ function -CMD_DB_lat()
     nV ++=;                                                                     #   Next volume
   end                                                                           # <<
   "\n"                                                                    -MSG; # Protocol
-  bNch if
-    idTrn -VMTL_check;                                                            # Check turns
-  else
-    "Skipping turn check.\n" -COLOR_yellow -MSG;
-  end
+  bNch if                                                                       # No-check mode >>
+    "  Skipping turn check.\n" -COLOR_yellow -MSG;                              #   Log
+  else                                                                          # <<
+    idTrn -VMTL_check;                                                          #   Check turns
+  end                                                                           # <<
+
+  "\n  Writing $[sOut] ..."                                               -MSG; # Log
+  .__CFG_bNwr not if                                                            # Not write protected >>
+    sOut "ascii" idTrn stdfile -export;                                         #   Write output file
+    " done.\n"                                                            -MSG; #   Log
+  else                                                                          # << Write protected >>
+    " SKIPPED (write protect on)" -COLOR_yellow                           -MSG; #   Log
+  end                                                                           # <<
 
   "\n\n// DB.xtp lat complete.\n"                                         -MSG; # Protocol
   0 return;                                                                     # Ok
