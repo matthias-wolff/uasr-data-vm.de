@@ -348,7 +348,6 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,sSpk,idTl)
   ## CD type 3                                                                  # -------------------------------------
   nCd -VM_cd_type 3 == if                                                       # CD type 3 >>
     sSdir -cd ?error if goto L_EXCEPTION; end                                   #   Change to signal folder
-"\n*** TYPE 3: " -cwd + "\n" + -echo;
     "????${sScn}[x${sRcc}]??_???_${sSpk}_${sLng}.nis" sFilter =;                #   Create file name filter
     "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                    #   Find matching signal files
     sLng "GER" == idTl -is_empty && if                                          #   German and no "_GER" turns found >>
