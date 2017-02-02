@@ -294,6 +294,7 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,sSpk,idTl)
   var  sFilter;                                                                 # File name filter
   var  sCwd;    -cwd sCwd =;                                                    # Save working directory
   data idTinfo;                                                                 # Turn list info
+  data idTlX;
   
   ## Normalize arguments                                                        # -------------------------------------
   "*" sSpk == if "???" sSpk =; end                                              # Correct speaker ID pattern
@@ -347,13 +348,20 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,sSpk,idTl)
 
   ## CD type 3                                                                  # -------------------------------------
   nCd -VM_cd_type 3 == if                                                       # CD type 3 >>
-    sSdir -cd ?error if goto L_EXCEPTION; end                                   #   Change to signal folder
-    "????${sScn}[x${sRcc}]??_???_${sSpk}_${sLng}.nis" sFilter =;                #   Create file name filter
-    "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                    #   Find matching signal files
+    sSdir "/_cd${nCd}" + -cd ?error if goto L_EXCEPTION; end                    #   Change to signal folder
+    "????${sScn}${sRcc}??_???_${sSpk}_${sLng}.nis" sFilter =;                   #   Create file name filter (rcc=sRcc)
+    "." sFilter TRUE idTl -SH_find;                                             #   Find matching signal files
+    "????${sScn}x??_???_${sSpk}_${sLng}.nis" sFilter =;                         #   Create file name filter (rcc=x)
+    "." sFilter TRUE idTlX -SH_find;                                            #   Find matching signal files
+    idTlX idTl -cat;                                                            #     Cat lists
     sLng "GER" == idTl -is_empty && if                                          #   German and no "_GER" turns found >>
-      "????${sScn}[x${sRcc}]??_???_${sSpk}.nis" sFilter =;                      #     Create file name filter
-      "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                  #     Find matching signal files
+      "????${sScn}${sRcc}??_???_${sSpk}.nis" sFilter =;                         #     Create file name filter (rcc=sRcc)
+      "." sFilter TRUE idTl -SH_find;                                           #     Find matching signal files
+      "????${sScn}x??_???_${sSpk}.nis" sFilter =;                               #     Create file name filter (rcc=x)
+      "." sFilter TRUE idTlX -SH_find;                                          #     Find matching signal files
+    idTlX idTl -cat;                                                            #     Cat lists
     end                                                                         #   <<
+    idTl 0 idTl -sortup;                                                        #   Sort turn list
     idTl "?.nis?" "replace" idTl -strop;                                        #   Remove ".nis" from file names
   end                                                                           # <<
   
