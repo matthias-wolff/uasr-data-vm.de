@@ -18,13 +18,15 @@ function -VMTL_list(idV)
   data idAux;                                                                   # Auxilary data instance
   var  sDir;                                                                    # Folder
   var  sCwd; -cwd sCwd =;                                                       # Save working directory
+  var  sOpt; "WIN32" ?platform if "/a:d" else "" end  sOpt =;                   # Platform-specific options for find
+
   "sig" "" -CFG_get_path sDir =;                                                # Get signal folder
   sDir -cd ?error not if                                                        # Change to signal folder, success >>
-    "." "_cd*" FALSE idV -SH_find;                                              #   Find matching CD directories
+    "." "_cd*" FALSE sOpt idV -SH_find_ex;                                      #   Find matching CD directories
   end                                                                           # <<
   "fea" "" -CFG_get_path sDir =;                                                # Get feature folder
   sDir -cd ?error not if                                                        # Change to feature folder, success >>
-    "." "_cd*" FALSE idAux -SH_find;                                            #   Find matching CD directories
+    "." "_cd*" FALSE sOpt idAux -SH_find_ex;                                    #   Find matching CD directories
   end                                                                           # <<
   idV idAux idV -SET_union;                                                     # Union of lists
   idV "?_cd?" "replace" idV -strop;                                             # Trim
@@ -346,6 +348,7 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,sSpk,idTl)
   ## CD type 3                                                                  # -------------------------------------
   nCd -VM_cd_type 3 == if                                                       # CD type 3 >>
     sSdir -cd ?error if goto L_EXCEPTION; end                                   #   Change to signal folder
+"\n*** TYPE 3: " -cwd + "\n" + -echo;
     "????${sScn}[x${sRcc}]??_???_${sSpk}_${sLng}.nis" sFilter =;                #   Create file name filter
     "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                    #   Find matching signal files
     sLng "GER" == idTl -is_empty && if                                          #   German and no "_GER" turns found >>
