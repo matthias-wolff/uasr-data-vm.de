@@ -348,17 +348,17 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,sSpk,idTl)
 
   ## CD type 3                                                                  # -------------------------------------
   nCd -VM_cd_type 3 == if                                                       # CD type 3 >>
-    sSdir "/_cd${nCd}" + -cd ?error if goto L_EXCEPTION; end                    #   Change to signal folder
+    sSdir -cd ?error if goto L_EXCEPTION; end                                   #   Change to signal folder
     "????${sScn}${sRcc}??_???_${sSpk}_${sLng}.nis" sFilter =;                   #   Create file name filter (rcc=sRcc)
-    "." sFilter TRUE idTl -SH_find;                                             #   Find matching signal files
+    "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                    #   Find matching signal files
     "????${sScn}x??_???_${sSpk}_${sLng}.nis" sFilter =;                         #   Create file name filter (rcc=x)
-    "." sFilter TRUE idTlX -SH_find;                                            #   Find matching signal files
+    "_cd${nCd}/" sFilter TRUE idTlX -SH_find;                                   #   Find matching signal files
     idTlX idTl -cat;                                                            #     Cat lists
     sLng "GER" == idTl -is_empty && if                                          #   German and no "_GER" turns found >>
       "????${sScn}${sRcc}??_???_${sSpk}.nis" sFilter =;                         #     Create file name filter (rcc=sRcc)
-      "." sFilter TRUE idTl -SH_find;                                           #     Find matching signal files
+      "_cd${nCd}/" sFilter TRUE idTl -SH_find;                                  #     Find matching signal files
       "????${sScn}x??_???_${sSpk}.nis" sFilter =;                               #     Create file name filter (rcc=x)
-      "." sFilter TRUE idTlX -SH_find;                                          #     Find matching signal files
+      "_cd${nCd}/" sFilter TRUE idTlX -SH_find;                                 #     Find matching signal files
     idTlX idTl -cat;                                                            #     Cat lists
     end                                                                         #   <<
     idTl 0 idTl -sortup;                                                        #   Sort turn list
