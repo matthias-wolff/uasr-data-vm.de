@@ -363,6 +363,7 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,sSpk,idTl)
     end                                                                         #   <<
     idTl 0 idTl -sortup;                                                        #   Sort turn list
     idTl "?.nis?" "replace" idTl -strop;                                        #   Remove ".nis" from file names
+    "????${sScn}[x${sRcc}]??_???_${sSpk}_${sLng}.nis" sFilter =;                #   Create file name filter
   end                                                                           # <<
   
   ## Aftermath                                                                  # -------------------------------------
