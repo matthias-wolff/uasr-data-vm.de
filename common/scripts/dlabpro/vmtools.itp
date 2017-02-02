@@ -361,7 +361,6 @@ function -VMTL_volume(nCd,sScn,sRcc,sLng,sSpk,idTl)
       "_cd${nCd}/" sFilter TRUE idTlX -SH_find;                                 #     Find matching signal files
     idTlX idTl -cat;                                                            #     Cat lists
     end                                                                         #   <<
-    idTl 0 idTl -sortup;                                                        #   Sort turn list
     idTl "?.nis?" "replace" idTl -strop;                                        #   Remove ".nis" from file names
     "????${sScn}[x${sRcc}]??_???_${sSpk}_${sLng}.nis" sFilter =;                #   Create file name filter
   end                                                                           # <<
