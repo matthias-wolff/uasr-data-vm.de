@@ -206,8 +206,8 @@ function -TRL_import_vm(sDir,sTid,idTrl)
     "${idAux[0,3]}_${idAux[0,4]}_${idAux[0,5]}.par" + sFn =;                    # |
   "ORT:" iF set line_flt;                                                       # Set line filter for ascii import
 
-	idTrl -reset;                                                                 # Reset destination instance
-  sFn "ascii" idTrl iF /strings -import;                                                 # Import partiture file
+  idTrl -reset;                                                                 # Reset destination instance
+  sFn "ascii" idTrl iF /strings -import;                                        # Import partiture file
   idTrl.nrec 0 == if FALSE return; end                                          # Das war n�scht ...
   idTrl 0 2 idTrl -delete;                                                      # Delete extra components
   TRUE return;
@@ -252,7 +252,7 @@ function -LX_import_vm(sFile,idLex)
   TRUE return;                                                                  # Jo!
 }
 
-## Method overwrites                                                            # -------------------------------------
+## Function overwrites                                                          # -------------------------------------
 ".-SIG_import" "function" ?instance if
   /disarm -SIG_import_vm /disarm -SIG_import =;                                 #   Overwrite -SIG_import
 end
